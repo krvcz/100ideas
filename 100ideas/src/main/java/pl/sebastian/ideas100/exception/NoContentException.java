@@ -1,8 +1,8 @@
 package pl.sebastian.ideas100.exception;
 
-public class NoDataFoundException extends RuntimeException{
+public class NoContentException extends RuntimeException{
 
-    public NoDataFoundException(){
+    public NoContentException(){
         super("No Data Found!");
 
     }
