@@ -1,2 +1,38 @@
-package pl.sebastian.ideas100.domain.model;public class Category {
+package pl.sebastian.ideas100.domain.model;
+
+import java.util.UUID;
+
+public class Category {
+    private UUID id;
+    private String name;
+
+    public Category(String name) {
+        this.id = UUID.randomUUID();
+        this.name = name;
+    }
+
+    public Category() {
+    }
+
+    @Override
+    public String toString() {
+        return "Category{" + "id=" + id + ", name='" + name + '\'' + '}';
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 }
+

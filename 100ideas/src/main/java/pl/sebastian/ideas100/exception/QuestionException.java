@@ -17,7 +17,7 @@ public class QuestionException extends ResponseStatusExceptionHandler {
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     @ResponseBody
-    public ResponseEntity<Object> getMethodArgumentTypeMismatchException(){
+    public ResponseEntity<Object> getMethodArgumentTypeMismatchException() {
 
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
@@ -27,15 +27,13 @@ public class QuestionException extends ResponseStatusExceptionHandler {
 
     @ExceptionHandler(NoContentException.class)
     @ResponseBody
-    public ResponseEntity<Object> getNoDataFoundException(){
+    public ResponseEntity<Object> getNoContentException(NoContentException noContentException) {
 
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());
-        body.put("message", "No content!");
+        body.put("message", noContentException.getMessage());
         return new ResponseEntity<>(body, HttpStatus.NO_CONTENT);
     }
-
-
 
 
 }

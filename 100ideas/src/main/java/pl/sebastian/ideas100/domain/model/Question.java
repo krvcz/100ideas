@@ -1,16 +1,15 @@
 package pl.sebastian.ideas100.domain.model;
 
 
-import java.util.Random;
 import java.util.UUID;
 
 public class Question {
 
     private UUID id;
-    private String category;
+    private Category category;
     private String content;
 
-    public Question(String category, String content) {
+    public Question(Category category, String content) {
         this.id = UUID.randomUUID();
         this.category = category;
         this.content = content;
@@ -27,7 +26,7 @@ public class Question {
                 '}';
     }
 
-    public String getCategory() {
+    public Category getCategory() {
         return category;
     }
 
@@ -39,7 +38,7 @@ public class Question {
         this.id = id;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(Category category) {
         this.category = category;
     }
 

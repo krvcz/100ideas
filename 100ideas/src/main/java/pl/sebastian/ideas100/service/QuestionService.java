@@ -1,6 +1,7 @@
 package pl.sebastian.ideas100.service;
 
 import org.springframework.stereotype.Service;
+import pl.sebastian.ideas100.domain.model.Category;
 import pl.sebastian.ideas100.domain.model.Question;
 import pl.sebastian.ideas100.exception.NoContentException;
 
@@ -8,17 +9,17 @@ import java.util.*;
 
 @Service
 public class QuestionService {
-    private List<Question> questionsMock= new ArrayList<>(Arrays.asList(new Question("życie", "Jak żyć?"),
-            new Question("sport", "Kto wygrał Ligę Mistrzów w 2020 roku?")));
+    private List<Question> questionsMock = new ArrayList<>(Arrays.asList(new Question(new Category("życie"), "Jak żyć?"),
+            new Question(new Category("sport"), "Kto wygrał Ligę Mistrzów w 2020 roku?")));
 
-    public List<Question> getQuestions(){
+    public List<Question> getQuestions() {
         if (questionsMock.isEmpty()) {
             throw new NoContentException();
         }
         return questionsMock;
     }
 
-    public Optional<Question> getQuestion(UUID id){
+    public Optional<Question> getQuestion(UUID id) {
         return getQuestions()
                 .stream()
                 .filter(x -> x.getId().equals(id))
@@ -30,8 +31,7 @@ public class QuestionService {
         if (questionOld.isPresent()) {
             questionsMock.remove(questionOld.get());
             questionsMock.add(question);
-        }
-        else {
+        } else {
             questionsMock.add(question);
         }
         question.setId(id);
@@ -39,6 +39,7 @@ public class QuestionService {
         return question;
 
     }
+
     public void removeQuestion(UUID id) {
         Optional<Question> questionOld = getQuestion(id);
 

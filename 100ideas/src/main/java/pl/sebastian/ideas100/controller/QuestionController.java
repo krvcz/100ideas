@@ -15,29 +15,29 @@ import java.util.UUID;
 @RequestMapping("questions")
 public class QuestionController {
 
-    private QuestionService questionService;
+    private final QuestionService questionService;
 
     public QuestionController(QuestionService questionService) {
         this.questionService = questionService;
     }
 
     @GetMapping
-    public ResponseEntity<List<Question>> showQuestions(){
+    public ResponseEntity<List<Question>> showQuestions() {
 
         return new ResponseEntity<>(questionService.getQuestions(), HttpStatus.OK);
 
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Question> getQuestionById(@PathVariable("id") UUID id){
-            Optional<Question> question = questionService.getQuestion(id);
+    public ResponseEntity<Question> getQuestionById(@PathVariable("id") UUID id) {
+        Optional<Question> question = questionService.getQuestion(id);
 
         return question.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseThrow(NoContentException::new);
 
     }
 
     @PostMapping("{id}")
-    public ResponseEntity<Question> createQuestion(@RequestBody Question question){
+    public ResponseEntity<Question> createQuestion(@RequestBody Question question) {
         Question questionAdded = questionService.addQuestion(question);
 
         return new ResponseEntity<>(questionAdded, HttpStatus.CREATED);
@@ -45,21 +45,18 @@ public class QuestionController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Question> addQuestion(@PathVariable("id") UUID id, @RequestBody Question question){
+    public ResponseEntity<Question> addQuestion(@PathVariable("id") UUID id, @RequestBody Question question) {
         Question questionFound = questionService.updateQuestion(id, question);
 
         return new ResponseEntity<>(questionFound, HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Object> removeQuestion(@PathVariable("id") UUID id){
+    public ResponseEntity<Object> removeQuestion(@PathVariable("id") UUID id) {
         questionService.removeQuestion(id);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
-
 
 
 }
