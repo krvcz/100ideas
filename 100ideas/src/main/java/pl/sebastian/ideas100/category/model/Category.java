@@ -1,4 +1,4 @@
-package pl.sebastian.ideas100.domain.model;
+package pl.sebastian.ideas100.category.model;
 
 import java.util.UUID;
 
@@ -16,7 +16,7 @@ public class Category {
 
     @Override
     public String toString() {
-        return "Category{" + "id=" + id + ", name='" + name + '\'' + '}';
+        return this.name;
     }
 
     public UUID getId() {

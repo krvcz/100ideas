@@ -1,11 +1,11 @@
-package pl.sebastian.ideas100.controller;
+package pl.sebastian.ideas100.category.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.sebastian.ideas100.domain.model.Category;
+import pl.sebastian.ideas100.category.model.Category;
 import pl.sebastian.ideas100.exception.NoContentException;
-import pl.sebastian.ideas100.service.CategoryService;
+import pl.sebastian.ideas100.category.service.CategoryService;
 
 import java.util.List;
 import java.util.Optional;

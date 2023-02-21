@@ -1,13 +1,12 @@
-package pl.sebastian.ideas100.service;
+package pl.sebastian.ideas100.answer.service;
 
 import org.springframework.stereotype.Service;
-import pl.sebastian.ideas100.domain.model.Answer;
-import pl.sebastian.ideas100.domain.model.Category;
-import pl.sebastian.ideas100.domain.model.Question;
+import pl.sebastian.ideas100.answer.model.Answer;
+import pl.sebastian.ideas100.category.model.Category;
+import pl.sebastian.ideas100.question.model.Question;
 import pl.sebastian.ideas100.exception.NoContentException;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class AnswerService {

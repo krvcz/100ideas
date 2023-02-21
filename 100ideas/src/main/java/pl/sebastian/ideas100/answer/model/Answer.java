@@ -1,5 +1,7 @@
-package pl.sebastian.ideas100.domain.model;
+package pl.sebastian.ideas100.answer.model;
 
+
+import pl.sebastian.ideas100.question.model.Question;
 
 import java.util.UUID;
 

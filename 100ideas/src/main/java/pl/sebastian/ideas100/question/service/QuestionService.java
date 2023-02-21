@@ -1,11 +1,12 @@
-package pl.sebastian.ideas100.service;
+package pl.sebastian.ideas100.question.service;
 
 import org.springframework.stereotype.Service;
-import pl.sebastian.ideas100.domain.model.Category;
-import pl.sebastian.ideas100.domain.model.Question;
+import pl.sebastian.ideas100.category.model.Category;
+import pl.sebastian.ideas100.question.model.Question;
 import pl.sebastian.ideas100.exception.NoContentException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class QuestionService {
@@ -17,6 +18,20 @@ public class QuestionService {
             throw new NoContentException();
         }
         return questionsMock;
+    }
+
+    public List<Question> getQuestionsFromCategory(UUID categoryId) {
+//        List<Question> questions = getQuestions().stream()
+//                .filter(question -> question.getCategory().getId().equals(categoryId))
+//                .toList();
+        List<Question> questions = List.of(getQuestions().get(0));
+//
+//
+
+        if (questions.isEmpty()) {
+            throw new NoContentException();
+        }
+        return questions;
     }
 
     public Optional<Question> getQuestion(UUID id) {

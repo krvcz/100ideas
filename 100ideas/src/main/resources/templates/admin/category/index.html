@@ -1,10 +1,220 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<!--
+This is a starter template page. Use this page to start your new project from
+scratch. This page gets rid of all links and provides the needed markup only.
+-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/template :: head(title = '100 Ideas - Admin')">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${title}">AdminLTE 3 | Starter</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="/admin/plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/admin/css/adminlte.min.css">
 </head>
-<body>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+
+    <!-- Navbar -->
+    <th:block th:replace="admin/template :: navbar"></th:block>
+    <!-- /.navbar -->
+
+    <!-- Main Sidebar Container -->
+    <th:block th:replace="admin/template :: sidebar"></th:block>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <div class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1 class="m-0">Categories</h1>
+                    </div><!-- /.col -->
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Starter Page</li>
+                        </ol>
+                    </div><!-- /.col -->
+                </div><!-- /.row -->
+            </div><!-- /.container-fluid -->
+        </div>
+        <!-- /.content-header -->
+
+        <!-- Main content -->
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
+                        <div class="card">
+                            <div class="card-header">
+                                <a class="btn btn-success a-btn-slide-text add">
+                                    <span class="glyphicon glyphicon-add" aria-hidden="true"></span>
+                                    <span><strong>New Category</strong></span>
+                                </a>
+
+                                <div class="card-tools">
+                                    <div class="input-group input-group-sm" style="width: 150px;">
+                                        <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
+
+                                        <div class="input-group-append">
+                                            <button type="submit" class="btn btn-default">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body table-responsive p-0">
+                                <table class="table table-hover text-nowrap">
+                                    <thead>
+                                    <tr>
+
+                                        <th>Name</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="category : ${categories}">
+                                        <td th:text="${category.name}"></td>
+                                        <td>
+                                            <a th:href="@{/questions(categoryId=${category.id})}" class="btn btn-default a-btn-slide-text">
+                                                <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
+                                                <span><strong>View</strong></span>
+                                            </a>
+                                            <a th:href="@{'/api/v1/categories/' + ${category.id}}" class="btn btn-primary a-btn-slide-text edit">
+                                                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                                <span><strong>Edit</strong></span>
+                                            </a>
+
+                                            <a th:href="@{'/admin/categories/' +  ${category.id} + '/delete'}" class="btn btn-danger a-btn-slide-text delete">
+                                                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+                                                <span><strong>Delete</strong></span>
+                                            </a>
+
+<!--                                            <a th:href="@{'/admin/categories/' + ${category.id} + '/delete'}" class="btn btn-danger a-btn-slide-text delete" methods="post">-->
+<!--                                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>-->
+<!--                                                <span><strong>Delete</strong></span>-->
+<!--                                            </a>-->
+
+<!--                                            <form th:action="@{'/admin/categories/' +  ${category.id} + '/delete'}" th:object="${category}" method="post">-->
+<!--                                                <a onclick="this.parentNode.submit();"  class="btn btn-danger a-btn-slide-text">-->
+<!--                                                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>-->
+<!--                                                    <span><strong>x</strong></span>-->
+<!--                                                </a>-->
+<!--                                            </form>-->
+                                           </td>
+
+
+<!--                                            <form th:action="@{'/admin/categories/delete'}" th:object="${category}" method="post">-->
+<!--                                                <input th:field="*{id}" type="hidden" class="form-control"  >-->
+<!--                                                <input th:field="*{name}" type="hidden" class="form-control"  >-->
+<!--                                                <button type="submit" name="your_name" value="your_value" class="btn btn-danger a-btn-slide-text">Delete</button>-->
+<!--                                            </form>-->
+
+                                        </td>
+
+
+
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                </div>
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+            <div class="modal fade" id="modal-add">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Add Category</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form th:action="@{/admin/categories/add}" th:object="${category}" method="post">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <label for="NameAdd">Name</label>
+                                        <input th:field="*{name}" type="text" class="form-control" id="NameAdd" placeholder="Enter name">
+                                    </div>
+                                </div>
+                                <div class="modal-footer justify-content-between">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+                <!-- /.modal-dialog -->
+            </div>
+            <div class="modal fade" id="modal-edit">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Edit Category</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form th:action="@{/admin/categories/update}" th:object="${category}"  method="post">
+                                <div class="card-body">
+                                    <div class="form-group">
+                                        <input th:field="*{id}" type="hidden" class="form-control" id="IdEdit" >
+                                        <label for="NameEdit">Name</label>
+                                        <input th:field="*{name}" type="text" class="form-control" id="NameEdit" placeholder="Enter name">
+                                    </div>
+                                </div>
+                                <div class="modal-footer justify-content-between">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.modal-content -->
+                </div>
+        </div>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+
+
+</div>
+    <!-- Control Sidebar -->
+    <th:block th:replace="admin/template :: rightbar"></th:block>
+    <!-- /.control-sidebar -->
+
+    <!-- Main Footer -->
+    <th:block th:replace="admin/template :: footer"></th:block>
+<!-- ./wrapper -->
+
+<!-- REQUIRED SCRIPTS -->
+
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+    <script src="/admin/js/adminlte.min.js"></script>
+    <!-- Custom Js -->
+    <script src="/admin/js/custom.js"></script>
 
 </body>
 </html>

@@ -1,12 +1,12 @@
-package pl.sebastian.ideas100.controller;
+package pl.sebastian.ideas100.question.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.sebastian.ideas100.domain.model.Question;
+import pl.sebastian.ideas100.question.model.Question;
 import pl.sebastian.ideas100.exception.NoContentException;
-import pl.sebastian.ideas100.service.QuestionService;
+import pl.sebastian.ideas100.question.service.QuestionService;
 
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +37,7 @@ public class QuestionApiController {
 
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    @PostMapping()
     public ResponseEntity<Question> createQuestion(Question question) {
         Question questionAdded = questionService.addQuestion(question);
 

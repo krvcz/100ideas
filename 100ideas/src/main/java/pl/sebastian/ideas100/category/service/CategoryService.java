@@ -1,7 +1,7 @@
-package pl.sebastian.ideas100.service;
+package pl.sebastian.ideas100.category.service;
 
 import org.springframework.stereotype.Service;
-import pl.sebastian.ideas100.domain.model.Category;
+import pl.sebastian.ideas100.category.model.Category;
 import pl.sebastian.ideas100.exception.NoContentException;
 
 import java.util.*;
@@ -50,6 +50,7 @@ public class CategoryService {
     }
 
     public Category addCategory(Category category) {
+        category.setId(UUID.randomUUID());
         categoryMock.add(category);
 
         return category;
