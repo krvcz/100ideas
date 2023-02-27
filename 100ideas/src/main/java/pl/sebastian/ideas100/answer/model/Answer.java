@@ -1,22 +1,33 @@
 package pl.sebastian.ideas100.answer.model;
 
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import pl.sebastian.ideas100.question.model.Question;
 
 import java.util.UUID;
 
+@Entity
+@Table(name = "answers")
 public class Answer {
+
+    @Id
     private UUID id;
+
+    @ManyToOne
     private Question question;
     private String content;
 
     public Answer(Question question, String content) {
-        this.id = UUID.randomUUID();
+        this();
         this.question = question;
         this.content = content;
     }
 
     public Answer() {
+        this.id = UUID.randomUUID();
     }
 
     @Override

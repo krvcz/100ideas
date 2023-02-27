@@ -1,79 +1,61 @@
 package pl.sebastian.ideas100.question.service;
 
 import org.springframework.stereotype.Service;
-import pl.sebastian.ideas100.category.model.Category;
+import org.springframework.transaction.annotation.Transactional;
 import pl.sebastian.ideas100.question.model.Question;
 import pl.sebastian.ideas100.exception.NoContentException;
+import pl.sebastian.ideas100.question.repository.QuestionRepository;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class QuestionService {
-    private List<Question> questionsMock = new ArrayList<>(Arrays.asList(new Question(new Category("życie"), "Jak żyć?"),
-            new Question(new Category("sport"), "Kto wygrał Ligę Mistrzów w 2020 roku?")));
+    private final QuestionRepository questionRepository;
 
+
+
+    public QuestionService(QuestionRepository questionRepository) {
+        this.questionRepository = questionRepository;
+    }
+
+    @Transactional(readOnly = true)
     public List<Question> getQuestions() {
-        if (questionsMock.isEmpty()) {
-            throw new NoContentException();
-        }
-        return questionsMock;
+        return questionRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public List<Question> getQuestionsFromCategory(UUID categoryId) {
-//        List<Question> questions = getQuestions().stream()
-//                .filter(question -> question.getCategory().getId().equals(categoryId))
-//                .toList();
-        List<Question> questions = List.of(getQuestions().get(0));
-//
-//
-
-        if (questions.isEmpty()) {
-            throw new NoContentException();
-        }
-        return questions;
+        return questionRepository.findAllByCategoryId(categoryId);
     }
 
+    @Transactional(readOnly = true)
     public Optional<Question> getQuestion(UUID id) {
-        return getQuestions()
-                .stream()
-                .filter(x -> x.getId().equals(id))
-                .findFirst();
+        return questionRepository.findById(id);
     }
 
+    @Transactional
     public Question updateQuestion(UUID id, Question question) {
-        Optional<Question> questionOld = getQuestion(id);
-        if (questionOld.isPresent()) {
-            questionsMock.remove(questionOld.get());
-            questionsMock.add(question);
-        } else {
-            questionsMock.add(question);
-        }
-        question.setId(id);
+        Question oldQuestion = questionRepository.getById(id);
 
-        return question;
+        oldQuestion.setCategory(question.getCategory());
+        oldQuestion.setContent(question.getContent());
 
+        return oldQuestion;
     }
 
+    @Transactional
     public void removeQuestion(UUID id) {
-        Optional<Question> questionOld = getQuestion(id);
-
-        if (questionOld.isPresent()) {
-            questionsMock.remove(questionOld.get());
-        } else {
-            throw new NoContentException();
-        }
+        questionRepository.deleteById(id);
     }
 
+    @Transactional
     public Question addQuestion(Question question) {
-        Optional<UUID> id = Optional.ofNullable(question.getId());
+        Question newQuestion = new Question();
 
-        if (id.isEmpty()) {
-            UUID newID = UUID.randomUUID();
-            question.setId(newID);
-        }
+        newQuestion.setContent(question.getContent());
+        newQuestion.setCategory(question.getCategory());
 
-        questionsMock.add(question);
+        questionRepository.save(newQuestion);
 
         return question;
     }

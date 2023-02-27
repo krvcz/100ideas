@@ -37,8 +37,8 @@ public class AnswerApiController {
     }
 
     @PostMapping("{id}")
-    public ResponseEntity<Answer> createAnswer(@RequestBody Answer answer) {
-        Answer answerAdded = answerService.addAnswer(answer);
+    public ResponseEntity<Answer> createAnswer(@PathVariable("id") UUID id, @RequestBody Answer answer) {
+        Answer answerAdded = answerService.addAnswer(id, answer);
 
         return new ResponseEntity<>(answerAdded, HttpStatus.CREATED);
 

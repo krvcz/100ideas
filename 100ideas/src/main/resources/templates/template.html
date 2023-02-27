@@ -126,7 +126,7 @@
         <ul class="nav nav-fill test text-uppercase small position-relative flex-nowrap">
           <th:block th:each="category : ${categories}">
             <li class="nav-item">
-              <a href="#" class="nav-link" th:text="${category.name}"></a>
+              <a href="#" th:href="@{'/categories/' + ${category.id}}" class="nav-link" th:text="${category.name}"></a>
             </li>
           </th:block>
         </ul>

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pl.sebastian.ideas100.category.model.Category;
 import pl.sebastian.ideas100.category.service.CategoryService;
 import pl.sebastian.ideas100.question.model.Question;
 import pl.sebastian.ideas100.question.service.QuestionService;

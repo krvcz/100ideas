@@ -1,58 +1,49 @@
 package pl.sebastian.ideas100.category.service;
 
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import pl.sebastian.ideas100.category.model.Category;
-import pl.sebastian.ideas100.exception.NoContentException;
+import pl.sebastian.ideas100.category.repository.CategoryRepository;
+
 
 import java.util.*;
 @Service
 public class CategoryService {
-    private List<Category> categoryMock = new ArrayList<>(Arrays.asList(
-            new Category("życie"),
-            new Category("sport"),
-            new Category("polityka"),
-            new Category("jedzenie"),
-            new Category("muzyka")));
+    private final CategoryRepository categoryRepository;
 
+    public CategoryService(CategoryRepository categoryRepository) {
+        this.categoryRepository = categoryRepository;
+    }
+
+    @Transactional(readOnly = true)
     public List<Category> getCategories() {
-        if (categoryMock.isEmpty()) {
-            throw new NoContentException();
-        }
-        return categoryMock;
+        return categoryRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Optional<Category> getCategory(UUID id) {
-        return getCategories().stream().filter(x -> x.getId().equals(id)).findFirst();
+        return categoryRepository.findById(id);
     }
 
+    @Transactional
     public Category updateCategory(UUID id, Category category) {
-        Optional<Category> categoryOld = getCategory(id);
-        if (categoryOld.isPresent()) {
-            categoryMock.remove(categoryOld.get());
-            categoryMock.add(category);
-        } else {
-            categoryMock.add(category);
-        }
-        category.setId(id);
+        Category oldCategory = categoryRepository.getById(id);
+        oldCategory.setName(category.getName());
 
-        return category;
+        return categoryRepository.save(oldCategory);
 
     }
 
+    @Transactional
     public void removeCategory(UUID id) {
-        Optional<Category> categoryOld = getCategory(id);
-
-        if (categoryOld.isPresent()) {
-            categoryMock.remove(categoryOld.get());
-        } else {
-            throw new NoContentException();
-        }
+        categoryRepository.deleteById(id);
     }
 
+    @Transactional
     public Category addCategory(Category category) {
-        category.setId(UUID.randomUUID());
-        categoryMock.add(category);
-
-        return category;
+        Category newCategory  = new Category();
+        newCategory.setName(category.getName());
+        return categoryRepository.save(newCategory);
     }
 }

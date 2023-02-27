@@ -1,7 +1,6 @@
 package pl.sebastian.ideas100.question.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,19 +31,17 @@ public class QuestionViewController {
     }
 
     @GetMapping
-    public String indexView(@RequestParam(value = "categoryId", required=false) UUID categoryId, Model model){
+    public String indexView(Model model){
         model.addAttribute("categories", categoryService.getCategories());
 
-        if (categoryId == null){
-            model.addAttribute("questions", questionService.getQuestions());
-        }
-        else {
-            model.addAttribute("questions", questionService.getQuestionsFromCategory(categoryId));
-        }
+        model.addAttribute("questions", questionService.getQuestions());
+
+
 
         return "question/index";
-//        return "template";
+
     }
+
 
     @GetMapping("{id}")
     public String singleView(@PathVariable("id") UUID id, Model model){
