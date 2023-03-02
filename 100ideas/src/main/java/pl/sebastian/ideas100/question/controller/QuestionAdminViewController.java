@@ -3,6 +3,7 @@ package pl.sebastian.ideas100.question.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +34,7 @@ public class QuestionAdminViewController {
     @GetMapping
     public String questionsView(Model model, @ModelAttribute("question") Question question) {
         model.addAttribute("questions", questionService.getQuestions());
-        model.addAttribute("categories", categoryService.getCategories());
+        model.addAttribute("categories", categoryService.getCategories(Pageable.unpaged()));
 //       model.addAttribute("question", new Question());
         return "admin/question/index";
     }

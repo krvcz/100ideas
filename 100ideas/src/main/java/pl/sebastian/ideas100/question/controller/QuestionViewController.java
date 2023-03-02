@@ -1,6 +1,7 @@
 package pl.sebastian.ideas100.question.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class QuestionViewController {
 
     @GetMapping
     public String indexView(Model model){
-        model.addAttribute("categories", categoryService.getCategories());
+        model.addAttribute("categories", categoryService.getCategories(Pageable.unpaged()));
 
         model.addAttribute("questions", questionService.getQuestions());
 
@@ -47,7 +48,7 @@ public class QuestionViewController {
     public String singleView(@PathVariable("id") UUID id, Model model){
         model.addAttribute("question", questionService.getQuestion(id));
         model.addAttribute("answers", answerService.getAnswersByQuestionId(id));
-        model.addAttribute("categories", categoryService.getCategories());
+        model.addAttribute("categories", categoryService.getCategories(Pageable.unpaged()));
 
         return "question/single";
     }
@@ -55,7 +56,7 @@ public class QuestionViewController {
     @GetMapping("add")
     public String addView(Model model){
         model.addAttribute("question", new Question());
-        model.addAttribute("categories", categoryService.getCategories());
+        model.addAttribute("categories", categoryService.getCategories(Pageable.unpaged()));
 
         return "question/add";
     }

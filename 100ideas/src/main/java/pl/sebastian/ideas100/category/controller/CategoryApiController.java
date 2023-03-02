@@ -1,5 +1,7 @@
 package pl.sebastian.ideas100.category.controller;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +24,9 @@ public class CategoryApiController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Category>> showCategories() {
+    public ResponseEntity<Page<Category>> showCategories(Pageable pageable) {
 
-        return new ResponseEntity<>(categoryService.getCategories(), HttpStatus.OK);
+        return new ResponseEntity<>(categoryService.getCategories(pageable), HttpStatus.OK);
 
     }
 

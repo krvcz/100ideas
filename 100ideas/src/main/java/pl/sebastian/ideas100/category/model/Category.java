@@ -2,15 +2,22 @@ package pl.sebastian.ideas100.category.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "categories")
+@Data
 public class Category {
 
     @Id
     private UUID id;
+
+    @NotBlank(message = "{ideas.validation.constraints.NotBlank.message}")
+    @Size(min=5, max=255, message = "{ideas.validation.constraints.Size.message}")
     private String name;
 
     public Category(String name) {
@@ -22,25 +29,5 @@ public class Category {
         this.id = UUID.randomUUID();
     }
 
-    @Override
-    public String toString() {
-        return this.name;
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 }
 

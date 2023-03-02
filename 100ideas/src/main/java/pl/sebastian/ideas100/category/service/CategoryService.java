@@ -1,10 +1,13 @@
 package pl.sebastian.ideas100.category.service;
 
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.sebastian.ideas100.category.model.Category;
 import pl.sebastian.ideas100.category.repository.CategoryRepository;
+
 
 
 import java.util.*;
@@ -17,8 +20,18 @@ public class CategoryService {
     }
 
     @Transactional(readOnly = true)
-    public List<Category> getCategories() {
-        return categoryRepository.findAll();
+    public Page<Category> getCategories(Pageable pageable) {
+        return getCategories(pageable, null);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Category> getCategories(Pageable pageable, String search) {
+
+        if  (search == null) {
+            return categoryRepository.findAll(pageable);
+        } else {
+            return categoryRepository.findAllByNameContainingIgnoreCase(search, pageable);
+        }
     }
 
     @Transactional(readOnly = true)

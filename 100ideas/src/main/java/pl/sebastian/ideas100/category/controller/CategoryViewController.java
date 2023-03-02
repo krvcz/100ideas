@@ -1,6 +1,7 @@
 package pl.sebastian.ideas100.category.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,7 +27,7 @@ public class CategoryViewController {
 
     @GetMapping("{id}")
     public String singleView(@PathVariable("id") UUID categoryId, Model model){
-        model.addAttribute("categories", categoryService.getCategories());
+        model.addAttribute("categories", categoryService.getCategories(Pageable.unpaged()));
         model.addAttribute("category", categoryService.getCategory(categoryId));
         model.addAttribute("questions", questionService.getQuestionsFromCategory(categoryId));
 
