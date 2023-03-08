@@ -2,11 +2,6 @@ package pl.sebastian.ideas100.question.model;
 
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Size;
-import pl.sebastian.ideas100.answer.model.Answer;
 import pl.sebastian.ideas100.category.model.Category;
 
 import java.util.Collections;
@@ -24,15 +19,13 @@ public class Question {
     @OneToMany(mappedBy = "question")
     private Set<Answer> answers;
 
-
     private String content;
 
     @ManyToOne
     private Category category;
 
-    public Question(Category category, String content) {
+    public Question(String content) {
         this();
-        this.category = category;
         this.content = content;
     }
 

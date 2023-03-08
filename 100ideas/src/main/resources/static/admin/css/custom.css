@@ -11,3 +11,11 @@ a.btn {
     -moz-transition-duration: 0.5s;
     -o-transition-duration: 0.5s;
 }
+
+.sort-asc:after {
+    content: "\21E7";
+}
+
+.sort-desc:after {
+    content: "\21E9";
+}

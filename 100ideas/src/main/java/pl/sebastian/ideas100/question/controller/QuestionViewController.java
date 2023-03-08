@@ -1,45 +1,39 @@
 package pl.sebastian.ideas100.question.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pl.sebastian.ideas100.IdeasConfiguration;
 import pl.sebastian.ideas100.question.model.Question;
-import pl.sebastian.ideas100.answer.service.AnswerService;
+import pl.sebastian.ideas100.question.service.AnswerService;
 import pl.sebastian.ideas100.category.service.CategoryService;
 import pl.sebastian.ideas100.question.service.QuestionService;
 
 import java.util.UUID;
 
+import static pl.sebastian.ideas100.common.utils.Controller.ControllerUtils.*;
 
 
 @Controller
 @RequestMapping("questions")
+@RequiredArgsConstructor
 public class QuestionViewController {
 
     private final QuestionService questionService;
     private final AnswerService answerService;
     private final CategoryService categoryService;
+    private final IdeasConfiguration ideasConfiguration;
 
 
-    @Autowired
-    public QuestionViewController(QuestionService questionService, AnswerService answerService, CategoryService categoryService) {
-        this.questionService = questionService;
-        this.answerService = answerService;
-        this.categoryService = categoryService;
-    }
 
     @GetMapping
     public String indexView(Model model){
-        model.addAttribute("categories", categoryService.getCategories(Pageable.unpaged()));
-
-        model.addAttribute("questions", questionService.getQuestions());
-
-
-
-        return "question/index";
+        return "redirect:/questions/hot";
 
     }
 
@@ -68,6 +62,48 @@ public class QuestionViewController {
 
         return "redirect:/questions/add";
     }
+
+    @GetMapping("hot")
+    public String hotView(Model model,
+                          @RequestParam(value = "page", required = false, defaultValue = "0") int page){
+
+
+        Pageable hotPage = PageRequest.of(page, Integer.parseInt(ideasConfiguration.getPageSize()));
+        Page<Question> hotQuestions = questionService.getHotQuestions(hotPage);
+        Integer nextPage = hotPage.next().getPageNumber();
+        Integer previousPage = hotPage.previousOrFirst().getPageNumber();
+
+        model.addAttribute("categories", categoryService.getCategories(Pageable.unpaged()));
+        model.addAttribute("nextPage", nextPage);
+        model.addAttribute("previousPage", previousPage);
+        model.addAttribute("questionsPage", hotQuestions);
+
+        paging(model, hotQuestions);
+
+        return "question/index";
+    }
+
+
+    @GetMapping("unanswered")
+    public String unansweredView(Model model,
+                          @RequestParam(value = "page", required = false, defaultValue = "0") int page){
+
+
+        Pageable unansweredPage = PageRequest.of(page, Integer.parseInt(ideasConfiguration.getPageSize()));
+        Page<Question> hotQuestions = questionService.getUnansweredQuestions(unansweredPage);
+        Integer nextPage = unansweredPage.next().getPageNumber();
+        Integer previousPage = unansweredPage.previousOrFirst().getPageNumber();
+
+        model.addAttribute("categories", categoryService.getCategories(Pageable.unpaged()));
+        model.addAttribute("nextPage", nextPage);
+        model.addAttribute("previousPage", previousPage);
+        model.addAttribute("questionsPage", hotQuestions);
+
+        paging(model, hotQuestions);
+
+        return "question/index";
+    }
+
 
 
 

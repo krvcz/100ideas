@@ -1,11 +1,11 @@
-package pl.sebastian.ideas100.answer.controller;
+package pl.sebastian.ideas100.question.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.sebastian.ideas100.answer.model.Answer;
+import pl.sebastian.ideas100.question.model.Answer;
 import pl.sebastian.ideas100.exception.NoContentException;
-import pl.sebastian.ideas100.answer.service.AnswerService;
+import pl.sebastian.ideas100.question.service.AnswerService;
 
 import java.util.List;
 import java.util.Optional;

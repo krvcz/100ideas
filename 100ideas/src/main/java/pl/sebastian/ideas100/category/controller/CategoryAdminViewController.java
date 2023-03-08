@@ -14,12 +14,15 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.sebastian.ideas100.category.model.Category;
 import pl.sebastian.ideas100.category.service.CategoryService;
 import pl.sebastian.ideas100.common.dto.Message;
+import pl.sebastian.ideas100.common.utils.Controller.ControllerUtils;
 
 
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
+import static pl.sebastian.ideas100.common.utils.Controller.ControllerUtils.*;
 
 @Controller
 @RequestMapping("/admin/categories")
@@ -124,15 +127,6 @@ public class CategoryAdminViewController {
         return "redirect:/admin/categories";
     }
 
-    public void paging(Model model, Page page){
-        int totalPages = page.getTotalPages();
-        if (totalPages > 0) {
-            List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
-                    .boxed()
-                    .toList();
-            model.addAttribute("pageNumbers", pageNumbers);
-        }
-    }
 
 
 }

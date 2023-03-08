@@ -1,10 +1,9 @@
-package pl.sebastian.ideas100.answer.service;
+package pl.sebastian.ideas100.question.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.sebastian.ideas100.answer.model.Answer;
-import pl.sebastian.ideas100.answer.repository.AnswerRepository;
-import pl.sebastian.ideas100.exception.NoContentException;
+import pl.sebastian.ideas100.question.model.Answer;
+import pl.sebastian.ideas100.question.repository.AnswerRepository;
 import pl.sebastian.ideas100.question.model.Question;
 import pl.sebastian.ideas100.question.repository.QuestionRepository;
 

@@ -26,4 +26,7 @@ insert into categories (id, name) values
 
 insert into questions (id, content, category_id) values
                                                   (gen_random_uuid(), 'Gdzie najlepiej spędzić wakacje z Polsce', (select id from categories where name = 'Turystyka')),
-                                                  (gen_random_uuid(), 'Gdzie najlepiej spędzić wakacje z Europie', (select id from categories where name = 'Turystyka'));
+                                                  (gen_random_uuid(), 'Gdzie najlepiej spędzić wakacje z Europie', (select id from categories where name = 'Turystyka')),
+                                                    (gen_random_uuid(), 'Gdzie najlepiej zjeść w Warszawie', (select id from categories where name = 'Kulinaria')),
+                                                 (gen_random_uuid(), 'Gdzie najlepiej zjeść w Poznaniu', (select id from categories where name = 'Kulinaria')),
+                                                 (gen_random_uuid(), 'Kto wygrał Ligę Mistrzów w 2016 roku?', (select id from categories where name = 'Hobby'));

@@ -1,4 +1,4 @@
-package pl.sebastian.ideas100.answer.model;
+package pl.sebastian.ideas100.question.model;
 
 
 import jakarta.persistence.Entity;
@@ -20,9 +20,8 @@ public class Answer {
     private Question question;
     private String content;
 
-    public Answer(Question question, String content) {
+    public Answer(String content) {
         this();
-        this.question = question;
         this.content = content;
     }
 
@@ -32,7 +31,7 @@ public class Answer {
 
     @Override
     public String toString() {
-        return "Answer{" + "id=" + id + ", question=" + question + ", content='" + content + '\'' + '}';
+        return "Answer{" + "id=" + id + ", question="  +  question + ", content='" + content + '\'' + '}';
     }
 
     public UUID getId() {

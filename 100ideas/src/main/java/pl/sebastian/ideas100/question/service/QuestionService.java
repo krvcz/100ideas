@@ -1,5 +1,7 @@
 package pl.sebastian.ideas100.question.service;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.sebastian.ideas100.question.model.Question;
@@ -58,5 +60,15 @@ public class QuestionService {
         questionRepository.save(newQuestion);
 
         return question;
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Question> getHotQuestions(Pageable pageable) {
+        return questionRepository.findHot(pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Question> getUnansweredQuestions(Pageable unansweredPage) {
+        return questionRepository.getUnansweredQuestions(unansweredPage);
     }
 }

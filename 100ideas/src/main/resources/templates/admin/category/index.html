@@ -97,7 +97,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                                         <td th:text="${it.index} + 1"></td>
                                         <td th:text="${category.name}"></td>
                                         <td>
-                                            <a th:href="@{/questions(categoryId=${category.id})}" class="btn btn-default a-btn-slide-text">
+                                            <a th:href="@{'/categories/' + ${category.id}}" class="btn btn-default a-btn-slide-text">
                                                 <span class="glyphicon glyphicon-eye-open" aria-hidden="true"></span>
                                                 <span><strong>View</strong></span>
                                             </a>
@@ -241,7 +241,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="/admin/js/adminlte.min.js"></script>
 
     <!-- Custom Js -->
-    <script src="/admin/js/custom.js"></script>
+    <script src="/js/custom.js"></script>
 
 
 <th:block th:if="${message != null}">
