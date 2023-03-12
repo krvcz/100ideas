@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.sebastian.ideas100.IdeasConfiguration;
+import pl.sebastian.ideas100.common.utils.Controller.CommonViewController;
 import pl.sebastian.ideas100.question.model.Question;
 import pl.sebastian.ideas100.question.service.AnswerService;
 import pl.sebastian.ideas100.category.service.CategoryService;
@@ -22,7 +23,7 @@ import static pl.sebastian.ideas100.common.utils.Controller.ControllerUtils.*;
 @Controller
 @RequestMapping("questions")
 @RequiredArgsConstructor
-public class QuestionViewController {
+public class QuestionViewController extends CommonViewController {
 
     private final QuestionService questionService;
     private final AnswerService answerService;
@@ -42,7 +43,7 @@ public class QuestionViewController {
     public String singleView(@PathVariable("id") UUID id, Model model){
         model.addAttribute("question", questionService.getQuestion(id));
         model.addAttribute("answers", answerService.getAnswersByQuestionId(id));
-        model.addAttribute("categories", categoryService.getCategories(Pageable.unpaged()));
+        addGlobalAttributes(model);
 
         return "question/single";
     }
@@ -50,7 +51,7 @@ public class QuestionViewController {
     @GetMapping("add")
     public String addView(Model model){
         model.addAttribute("question", new Question());
-        model.addAttribute("categories", categoryService.getCategories(Pageable.unpaged()));
+        addGlobalAttributes(model);
 
         return "question/add";
     }
@@ -73,7 +74,7 @@ public class QuestionViewController {
         Integer nextPage = hotPage.next().getPageNumber();
         Integer previousPage = hotPage.previousOrFirst().getPageNumber();
 
-        model.addAttribute("categories", categoryService.getCategories(Pageable.unpaged()));
+        addGlobalAttributes(model);
         model.addAttribute("nextPage", nextPage);
         model.addAttribute("previousPage", previousPage);
         model.addAttribute("questionsPage", hotQuestions);
@@ -94,7 +95,7 @@ public class QuestionViewController {
         Integer nextPage = unansweredPage.next().getPageNumber();
         Integer previousPage = unansweredPage.previousOrFirst().getPageNumber();
 
-        model.addAttribute("categories", categoryService.getCategories(Pageable.unpaged()));
+        addGlobalAttributes(model);
         model.addAttribute("nextPage", nextPage);
         model.addAttribute("previousPage", previousPage);
         model.addAttribute("questionsPage", hotQuestions);

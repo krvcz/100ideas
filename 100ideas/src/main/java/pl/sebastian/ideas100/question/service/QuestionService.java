@@ -1,6 +1,8 @@
 package pl.sebastian.ideas100.question.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,18 +13,24 @@ import pl.sebastian.ideas100.question.repository.QuestionRepository;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class QuestionService {
     private final QuestionRepository questionRepository;
 
-
-
-    public QuestionService(QuestionRepository questionRepository) {
-        this.questionRepository = questionRepository;
+    @Transactional(readOnly = true)
+    public Page<Question> getQuestions(Pageable pageable) {
+        return getQuestions(pageable, null);
     }
 
     @Transactional(readOnly = true)
-    public List<Question> getQuestions() {
-        return questionRepository.findAll();
+    public Page<Question> getQuestions(Pageable pageable, String search) {
+
+        if (search == null) {
+            return questionRepository.findAll(pageable);
+        } else {
+            return getQuestionsFromQuery(search, pageable);
+        }
+
     }
 
     @Transactional(readOnly = true)
@@ -70,5 +78,10 @@ public class QuestionService {
     @Transactional(readOnly = true)
     public Page<Question> getUnansweredQuestions(Pageable unansweredPage) {
         return questionRepository.getUnansweredQuestions(unansweredPage);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Question> getQuestionsFromQuery(String query, Pageable pageable) {
+        return questionRepository.findAllByQuery(query, pageable);
     }
 }

@@ -86,7 +86,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   </tr>
                   </thead>
                   <tbody>
-                  <tr th:each="question : ${questions}">
+                  <tr th:each="question : ${questionsPage.content}">
                     <td th:text="${question.content}"></td>
                     <td th:text="${question.category.name}"></td>
                     <td>
@@ -131,6 +131,21 @@ scratch. This page gets rid of all links and provides the needed markup only.
                   </tr>
                   </tbody>
                 </table>
+                <nav aria-label="Page navigation example">
+                  <ul class="pagination justify-content-end" th:if="${questionsPage.totalPages > 0}">
+                    <li class="page-item" >
+                      <a class="page-link" th:href="@{'/admin/questions'(size=${questionsPage.size}, page=${previousPage})}" tabindex="-1">Previous</a>
+                    </li>
+                    <th:block th:each="pageNumber : ${pageNumbers}">
+                      <li class="page-item">
+                        <a class="page-link" href="#" th:href="@{'/admin/questions'(size=${questionsPage.size}, page=${pageNumber}-1)}" th:text="${pageNumber}"></a>
+                      </li>
+                    </th:block>
+                    <li class="page-item">
+                      <a class="page-link" th:href="@{'/admin/questions'(size=${questionsPage.size}, page=${nextPage})}">Next</a>
+                    </li>
+                  </ul>
+                </nav>
               </div>
               <!-- /.card-body -->
             </div>
@@ -189,7 +204,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <input th:field="*{content}" type="text" class="form-control" id="ContentEdit" placeholder="Enter content">
                     <label for="CategoryEdit">Category</label>
                     <select th:field="*{category}" id="CategoryEdit" class="form-control">
-                      <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                      <option th:each="category : ${categories.content}" th:value="${category.id}" th:text="${category.name}"></option>
                     </select>
 
 

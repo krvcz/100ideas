@@ -32,12 +32,12 @@ public class CategoryApiController {
 
     @GetMapping("{id}")
     public ResponseEntity<Category> getCategoryById(@PathVariable("id") UUID id) {
+
         Optional<Category> category = categoryService.getCategory(id);
 
         return category.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseThrow(NoContentException::new);
 
     }
-
     @PostMapping("{id}")
     public ResponseEntity<Category> createCategory(@RequestBody Category category) {
         Category categoryAdded = categoryService.addCategory(category);

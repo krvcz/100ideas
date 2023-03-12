@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.sebastian.ideas100.category.model.Category;
 import pl.sebastian.ideas100.category.service.CategoryService;
 import pl.sebastian.ideas100.common.dto.Message;
+import pl.sebastian.ideas100.common.utils.Controller.CommonViewController;
 import pl.sebastian.ideas100.common.utils.Controller.ControllerUtils;
 
 
@@ -26,7 +27,7 @@ import static pl.sebastian.ideas100.common.utils.Controller.ControllerUtils.*;
 
 @Controller
 @RequestMapping("/admin/categories")
-public class CategoryAdminViewController {
+public class CategoryAdminViewController extends CommonViewController {
 
     private final CategoryService categoryService;
 
