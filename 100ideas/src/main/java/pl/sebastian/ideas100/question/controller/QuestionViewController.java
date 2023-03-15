@@ -33,7 +33,7 @@ public class QuestionViewController extends CommonViewController {
 
 
     @GetMapping
-    public String indexView(Model model){
+    public String indexView(){
         return "redirect:/questions/hot";
 
     }
@@ -71,12 +71,10 @@ public class QuestionViewController extends CommonViewController {
 
         Pageable hotPage = PageRequest.of(page, Integer.parseInt(ideasConfiguration.getPageSize()));
         Page<Question> hotQuestions = questionService.getHotQuestions(hotPage);
-        Integer nextPage = hotPage.next().getPageNumber();
-        Integer previousPage = hotPage.previousOrFirst().getPageNumber();
 
-        addGlobalAttributes(model);
-        model.addAttribute("nextPage", nextPage);
-        model.addAttribute("previousPage", previousPage);
+
+
+        addGlobalAttributes(model, hotPage);
         model.addAttribute("questionsPage", hotQuestions);
 
         paging(model, hotQuestions);
@@ -92,12 +90,9 @@ public class QuestionViewController extends CommonViewController {
 
         Pageable unansweredPage = PageRequest.of(page, Integer.parseInt(ideasConfiguration.getPageSize()));
         Page<Question> hotQuestions = questionService.getUnansweredQuestions(unansweredPage);
-        Integer nextPage = unansweredPage.next().getPageNumber();
-        Integer previousPage = unansweredPage.previousOrFirst().getPageNumber();
 
-        addGlobalAttributes(model);
-        model.addAttribute("nextPage", nextPage);
-        model.addAttribute("previousPage", previousPage);
+        addGlobalAttributes(model, unansweredPage);
+
         model.addAttribute("questionsPage", hotQuestions);
 
         paging(model, hotQuestions);

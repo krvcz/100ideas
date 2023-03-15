@@ -47,8 +47,6 @@ public class CategoryAdminViewController extends CommonViewController {
 
 
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.fromString(direction), field);
-        Integer nextPage = pageable.next().getPageNumber();
-        Integer previousPage = pageable.previousOrFirst().getPageNumber();
 
         String reverseSort = null;
         if ("asc".equals(direction)) {
@@ -60,14 +58,13 @@ public class CategoryAdminViewController extends CommonViewController {
 
         Page<Category> categoryPage = categoryService.getCategories(pageable, search);
 
-
         model.addAttribute("categoriesPage", categoryPage);
-        model.addAttribute("nextPage", nextPage);
-        model.addAttribute("previousPage", previousPage);
         model.addAttribute("search", search);
         model.addAttribute("reverseSort", reverseSort);
 
+        addGlobalAttributes(model, pageable);
         paging(model, categoryPage);
+
         return "admin/category/index";
  }
 
@@ -83,16 +80,14 @@ public class CategoryAdminViewController extends CommonViewController {
 
 
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.fromString(direction), field);
-        Integer nextPage = pageable.next().getPageNumber();
-        Integer previousPage = pageable.previousOrFirst().getPageNumber();
+
         Page<Category> categoriesPage = categoryService.getCategories(pageable);
 
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("category", category);
             model.addAttribute("categoriesPage", categoriesPage);
-            model.addAttribute("nextPage", nextPage);
-            model.addAttribute("previousPage", previousPage);
+            addGlobalAttributes(model, pageable);
             paging(model, categoriesPage);
             return "admin/category/index";
         }
@@ -103,8 +98,7 @@ public class CategoryAdminViewController extends CommonViewController {
         } catch (Exception e){
             model.addAttribute("category", category);
             model.addAttribute("categoriesPage", categoriesPage);
-            model.addAttribute("nextPage", nextPage);
-            model.addAttribute("previousPage", previousPage);
+            addGlobalAttributes(model, pageable);
             paging(model, categoriesPage);
             return "admin/category/index";
         }
