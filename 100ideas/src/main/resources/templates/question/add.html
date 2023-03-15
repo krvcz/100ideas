@@ -1,15 +1,55 @@
+
 <!DOCTYPE html>
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Question</title>
-</head>
+<head th:replace="template :: head(title = '100 ideas')"></head>
 <body>
-<div class="alert alert-primary" role="alert" th:text="${success}" th:if="${success}"></div>
-<form action="#" th:action="@{/questions/add}" th:object="${question}" method="post">
-    <p>Category: <input type="text" th:field="${question.category}" /></p>
-    <p>Content: <input type="text" th:field="${question.content}" /></p>
-    <p><input type="submit" value="Submit" /> <input type="reset" value="Reset" /></p>
-</form>
+<th:body th:replace="template :: header"></th:body>
+<main class="container">
+    <div class="row g-5">
+        <div class="col-md-12">
+            <article class="blog-post">
+                <h2 class="blog-post-title mb-1">New Question</h2>
+                <form th:action="@{/questions/add}" th:object="${question}" method="post" class="form-control">
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('*{content}')}" th:errorclass="error" th:errors="*{content}"></div>
+                    <div class="card-body">
+                        <p></p>
+                        <div class="form-group row">
+                            <label for="NameAdd" class="col-sm-2 col-form-label">Question</label>
+                            <div class="col-sm-10">
+                                <input th:field="*{content}" type="text" class="form-control" id="NameAdd" placeholder="Enter question">
+                            </div>
+                        </div>
+                        <p></p>
+                        <div class="form-group row">
+                            <label for="CategoryAdd" class="col-sm-2 col-form-label">Category</label>
+                            <div class="col-sm-10">
+                                <p th:if="${#fields.hasErrors('*{category}')}" th:errorclass="error" th:errors="*{category}"></p>
+                                <select th:field="*{category}"  id="CategoryAdd" class="form-control">
+                                    <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <p></p>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-info">Create</button>
+                    </div>
+
+                </form>
+
+            </article>
+        </div>
+
+    </div>
+
+</main>
+
+<th:body th:replace="template :: footer"></th:body>
 </body>
+
+<!-- jQuery -->
+<script src="/admin/plugins/jquery/jquery.min.js"></script>
+<!-- Custom Js -->
+<script src="/js/custom.js"></script>
 </html>

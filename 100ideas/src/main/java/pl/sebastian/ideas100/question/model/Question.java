@@ -2,6 +2,9 @@ package pl.sebastian.ideas100.question.model;
 
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import pl.sebastian.ideas100.category.model.Category;
 
 import java.util.Collections;
@@ -19,9 +22,12 @@ public class Question {
     @OneToMany(mappedBy = "question")
     private Set<Answer> answers;
 
+    @NotBlank(message = "{ideas.validation.question.constraints.NotNull.message}")
+    @Size(min = 20, max=255, message = "{ideas.validation.question.constraints.Size.message}")
     private String content;
 
     @ManyToOne
+    @NotNull(message = "{ideas.validation.question.constraints.NotNull.message}")
     private Category category;
 
     public Question(String content) {

@@ -1,11 +1,13 @@
 package pl.sebastian.ideas100.question.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.sebastian.ideas100.IdeasConfiguration;
@@ -49,19 +51,30 @@ public class QuestionViewController extends CommonViewController {
     }
 
     @GetMapping("add")
-    public String addView(Model model){
-        model.addAttribute("question", new Question());
+    public String addView(@ModelAttribute("question") Question question,
+                          Model model){
+
         addGlobalAttributes(model);
 
         return "question/add";
     }
 
     @PostMapping(value ="add")
-    public String add(@ModelAttribute("question") Question question, RedirectAttributes redirectAttributes) {
+    public String add(@Valid @ModelAttribute("question") Question question,
+                      BindingResult bindingResult,
+                      RedirectAttributes redirectAttributes,
+                      Model model) {
+
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("question", question);
+            addGlobalAttributes(model);
+            return "question/add";
+        }
+
         questionService.addQuestion(question);
         redirectAttributes.addFlashAttribute("success", "Question added!");
-
-        return "redirect:/questions/add";
+        return "redirect:/question/single";
     }
 
     @GetMapping("hot")

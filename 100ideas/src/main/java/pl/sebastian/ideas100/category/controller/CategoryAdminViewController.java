@@ -109,14 +109,17 @@ public class CategoryAdminViewController extends CommonViewController {
     }
 
     @PostMapping(value = "update")
-    public String edit(@ModelAttribute("category") Category category, RedirectAttributes redirectAttributes) {
+    public String edit(@ModelAttribute("category") Category category,
+                       RedirectAttributes redirectAttributes) {
         categoryService.updateCategory(category.getId(), category);
         redirectAttributes.addFlashAttribute("message", Message.info("Category edited!"));
         return "redirect:/admin/categories";
     }
 
     @PostMapping("/{categoryId}/delete")
-    public String delete(@ModelAttribute("category") Category category, RedirectAttributes redirectAttributes, @PathVariable UUID categoryId) {
+    public String delete(@ModelAttribute("category") Category category,
+                         RedirectAttributes redirectAttributes,
+                         @PathVariable UUID categoryId) {
         categoryService.removeCategory(categoryId);
         redirectAttributes.addFlashAttribute("message", Message.success("Category deleted!"));
         return "redirect:/admin/categories";

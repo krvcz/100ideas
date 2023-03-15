@@ -16,8 +16,8 @@ public class Category {
     @Id
     private UUID id;
 
-    @NotBlank(message = "{ideas.validation.constraints.NotBlank.message}")
-    @Size(min=5, max=255, message = "{ideas.validation.constraints.Size.message}")
+    @NotBlank(message = "{ideas.validation.category.constraints.NotBlank.message}")
+    @Size(min=5, max=255, message = "{ideas.validation.category.constraints.Size.message}")
     private String name;
 
     public Category(String name) {
