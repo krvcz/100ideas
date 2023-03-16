@@ -30,7 +30,6 @@ public class QuestionViewController extends CommonViewController {
 
     private final QuestionService questionService;
     private final AnswerService answerService;
-    private final CategoryService categoryService;
     private final IdeasConfiguration ideasConfiguration;
 
 

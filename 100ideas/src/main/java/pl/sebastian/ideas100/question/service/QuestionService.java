@@ -34,8 +34,8 @@ public class QuestionService {
     }
 
     @Transactional(readOnly = true)
-    public List<Question> getQuestionsFromCategory(UUID categoryId) {
-        return questionRepository.findAllByCategoryId(categoryId);
+    public Page<Question> getQuestionsFromCategory(UUID categoryId, Pageable pageable) {
+        return questionRepository.findAllByCategoryId(categoryId, pageable);
     }
 
     @Transactional(readOnly = true)
