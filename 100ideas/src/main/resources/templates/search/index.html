@@ -17,9 +17,9 @@
         </div>
       </form>
 
-      <article class="blog-post">
+      <article class="blog-post" th:if="${searchedElements != null and searchedElements.totalElements > 0}">
         <h2 class="blog-post-title mb-1">Questions</h2>
-        <table class="table" th:if="${searchedElements != null and searchedElements.totalElements > 0}">
+        <table class="table" >
           <thead>
           <tr>
             <th>Content</th>

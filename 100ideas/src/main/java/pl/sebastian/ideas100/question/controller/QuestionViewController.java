@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.sebastian.ideas100.IdeasConfiguration;
+import pl.sebastian.ideas100.common.dto.Message;
 import pl.sebastian.ideas100.common.utils.Controller.CommonViewController;
 import pl.sebastian.ideas100.question.model.Question;
 import pl.sebastian.ideas100.question.service.AnswerService;
@@ -72,9 +73,9 @@ public class QuestionViewController extends CommonViewController {
             return "question/add";
         }
 
-        questionService.addQuestion(question);
-        redirectAttributes.addFlashAttribute("success", "Question added!");
-        return "redirect:/question/single";
+        Question addedQuestion = questionService.addQuestion(question);
+        redirectAttributes.addFlashAttribute("success", Message.success("Question added!"));
+        return "redirect:/questions/" + addedQuestion.getId();
     }
 
     @GetMapping("hot")

@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import pl.sebastian.ideas100.category.model.Category;
 import pl.sebastian.ideas100.question.model.Question;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public interface QuestionRepository extends JpaRepository<Question, UUID> {
 
     @Query("from Question q where upper(q.category.name) like concat('%',upper(:query),'%') or upper(q.content) like concat('%',upper(:query),'%')")
     Page<Question> findAllByQuery(@Param("query") String query, Pageable pageable);
+
 
 
 }

@@ -35,6 +35,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1 class="m-0">Questions</h1>
+            <h5 class="m-0" th:text="'Total : ' + ${questionsPage.getTotalElements()}"> </h5>
+            <h8 class="m-0" th:text="${search}" th:if="${search != ''}"></h8>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -52,7 +54,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
-            <div class="alert alert-success" role="alert" th:text="${success}" th:if="${success}"></div>
+            <div class="alert alert-danger" th:if="${#fields.hasErrors('${question.content}')}" th:errors="*{question.content}">
+              <ul>
+                <li th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+              </ul>
+            </div>
 
             <div class="card">
               <div class="card-header">
@@ -62,15 +68,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </a>
 
                 <div class="card-tools">
-                  <div class="input-group input-group-sm" style="width: 150px;">
-                    <input type="text" name="table_search" class="form-control float-right" placeholder="Search">
-
-                    <div class="input-group-append">
-                      <button type="submit" class="btn btn-default">
-                        <i class="fas fa-search"></i>
-                      </button>
+                  <form th:action="@{/admin/questions}" method="get">
+                    <div class="input-group input-group-sm" style="width: 300px;">
+                      <input type="text" name="keyword" class="form-control float-right" placeholder="Search" th:value="${search}">
+                      <div class="input-group-append">
+                        <button type="submit" class="btn btn-default">
+                          <i class="fas fa-search"></i>
+                        </button>
+                      </div>
                     </div>
-                  </div>
+                  </form>
                 </div>
               </div>
               <!-- /.card-header -->
@@ -237,13 +244,31 @@ scratch. This page gets rid of all links and provides the needed markup only.
   <!-- REQUIRED SCRIPTS -->
 
   <!-- jQuery -->
-  <script src="plugins/jquery/jquery.min.js"></script>
+  <script src="/admin/plugins/jquery/jquery.min.js"></script>
   <!-- Bootstrap 4 -->
-  <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="/admin/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <!-- AdminLTE App -->
   <script src="/admin/js/adminlte.min.js"></script>
   <!-- Custom Js -->
   <script src="/admin/js/custom.js"></script>
 
+
+  <th:block th:if="${message != null}">
+    <script>
+      $(document).Toasts('create', {
+        title: '[[${message.content}]]',
+        body: '[[${message.msg}]]',
+        position: 'topRight',
+        autohide: true,
+        delay: 6500,
+        class: '[[${message.backgroundAlert}]]'
+
+      })
+
+
+
+    </script>
+
+  </th:block>
 </body>
 </html>

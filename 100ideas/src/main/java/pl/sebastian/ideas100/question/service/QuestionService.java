@@ -67,7 +67,7 @@ public class QuestionService {
 
         questionRepository.save(newQuestion);
 
-        return question;
+        return newQuestion;
     }
 
     @Transactional(readOnly = true)

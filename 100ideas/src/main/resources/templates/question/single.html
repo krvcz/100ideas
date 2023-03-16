@@ -1,15 +1,16 @@
 
 <!DOCTYPE html>
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="template :: head(title = '100 ideas' + ' - ' + ${question.get().getContent()})"></head>
+<head th:replace="template :: head(title = '100 ideas' + ' - ' + ${question.get().content})"></head>
 <body>
 <th:body th:replace="template :: header"></th:body>
 <main class="container">
   <div class="row g-5">
     <div class="col-md-12">
+      <div class="alert alert-success" role="alert" th:text="${success.msg}" th:if="${success}"></div>
       <article class="blog-post">
-        <h2 class="blog-post-title mb-1" th:text="${question.get().getContent()}">Sample blog post</h2>
-        <p class="blog-post-meta">January 1, 2021 by <a href="#">Mark</a></p>
+        <h2 class="blog-post-title mb-1" th:text="${question.get().content}">Sample blog post</h2>
+
         <h3>Answers</h3>
         <table class="table">
           <thead>
@@ -36,6 +37,8 @@
 </main>
 
 <th:body th:replace="template :: footer"></th:body>
+
+
 </body>
 
 
