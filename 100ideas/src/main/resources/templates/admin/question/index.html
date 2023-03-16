@@ -86,14 +86,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <table class="table table-hover text-nowrap">
                   <thead>
                   <tr>
-
-                    <th>Name</th>
-                    <th>Category</th>
+                    <th> # </th>
+                    <th> <a th:class="'sort-' + ${reverseSort}" th:href="@{'/admin/questions'(keyword=${search}, field='content', direction=${reverseSort})}">Name </a></th>
+                    <th> <a th:class="'sort-' + ${reverseSort}" th:href="@{'/admin/questions'(keyword=${search}, field='category.name', direction=${reverseSort})}">Category </a></th>
                     <th>Action</th>
                   </tr>
                   </thead>
                   <tbody>
-                  <tr th:each="question : ${questionsPage.content}">
+                  <tr th:each="question, it : ${questionsPage.content}">
+                    <td th:text="${it.index} + 1"></td>
                     <td th:text="${question.content}"></td>
                     <td th:text="${question.category.name}"></td>
                     <td>
