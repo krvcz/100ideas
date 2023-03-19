@@ -5,12 +5,17 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 import pl.sebastian.ideas100.question.model.Question;
 
 import java.util.UUID;
 
 @Entity
 @Table(name = "answers")
+@Getter
+@Setter
 public class Answer {
 
     @Id
@@ -18,6 +23,7 @@ public class Answer {
 
     @ManyToOne
     private Question question;
+
     private String content;
 
     public Answer(String content) {
@@ -29,32 +35,4 @@ public class Answer {
         this.id = UUID.randomUUID();
     }
 
-    @Override
-    public String toString() {
-        return "Answer{" + "id=" + id + ", question="  +  question + ", content='" + content + '\'' + '}';
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Question getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(Question question) {
-        this.question = question;
-    }
 }

@@ -1,6 +1,8 @@
 package pl.sebastian.ideas100.question.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pl.sebastian.ideas100.question.model.Answer;
 import pl.sebastian.ideas100.question.repository.AnswerRepository;
@@ -10,20 +12,19 @@ import pl.sebastian.ideas100.question.repository.QuestionRepository;
 import java.util.*;
 
 @Service
+@RequiredArgsConstructor
 public class AnswerService {
 
     private final AnswerRepository answerRepository;
 
     private final QuestionRepository questionRepository;
 
-    public AnswerService(AnswerRepository answerRepository, QuestionRepository questionRepository) {
-        this.answerRepository = answerRepository;
-        this.questionRepository = questionRepository;
-    }
+
     @Transactional(readOnly = true)
     public List<Answer> getAnswers() {
         return answerRepository.findAll();
     }
+
     @Transactional(readOnly = true)
     public List<Answer> getAnswersByQuestionId(UUID questionId) {
             return answerRepository.findAllByQuestionId(questionId);
@@ -58,12 +59,18 @@ public class AnswerService {
         Question question = questionRepository.getById(questionId);
 
         newAnswer.setContent(answer.getContent());
-        question.addAnswer(answer);
+        question.addAnswer(newAnswer);
 
-        questionRepository.save(question);
         answerRepository.save(newAnswer);
+        questionRepository.save(question);
+
+
 
 
         return newAnswer;
+
+
+
+
     }
 }
