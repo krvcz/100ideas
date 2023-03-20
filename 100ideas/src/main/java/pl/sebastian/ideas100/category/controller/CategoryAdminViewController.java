@@ -1,6 +1,7 @@
 package pl.sebastian.ideas100.category.controller;
 
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -27,14 +28,10 @@ import static pl.sebastian.ideas100.common.utils.Controller.ControllerUtils.*;
 
 @Controller
 @RequestMapping("/admin/categories")
+@RequiredArgsConstructor
 public class CategoryAdminViewController extends CommonViewController {
 
     private final CategoryService categoryService;
-
-    @Autowired
-    public CategoryAdminViewController(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
 
     @GetMapping
     public String categoriesView(Model model,
