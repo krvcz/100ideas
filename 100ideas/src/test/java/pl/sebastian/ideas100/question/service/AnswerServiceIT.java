@@ -95,6 +95,7 @@ class AnswerServiceIT {
         answerRepository.save(answer2);
         answerRepository.save(answer3);
 
+
         // When
         List<Answer> answerList = answerService.getAnswersByQuestionId(question.getId());
 
