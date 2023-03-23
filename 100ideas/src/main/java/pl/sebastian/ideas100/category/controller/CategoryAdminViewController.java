@@ -106,9 +106,37 @@ public class CategoryAdminViewController extends CommonViewController {
     }
 
     @PostMapping(value = "update")
-    public String edit(@ModelAttribute("category") Category category,
-                       RedirectAttributes redirectAttributes) {
-        categoryService.updateCategory(category.getId(), category);
+    public String edit(@Valid @ModelAttribute("category") Category category,
+                       BindingResult bindingResult,
+                       RedirectAttributes redirectAttributes,
+                       Model model,
+                       @RequestParam(value = "size", required = false, defaultValue = "10") int size,
+                       @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+                       @RequestParam(value = "field", required = false, defaultValue = "id") String field,
+                       @RequestParam(value = "direction", required = false, defaultValue = "asc") String direction) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.Direction.fromString(direction), field);
+        Page<Category> categoriesPage = categoryService.getCategories(pageable);
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("category", category);
+            model.addAttribute("categoriesPage", categoriesPage);
+            addGlobalAttributes(model, pageable);
+            paging(model, categoriesPage);
+            return "admin/category/index";
+        }
+
+        try {
+            categoryService.updateCategory(category.getId(), category);
+
+        } catch (Exception e){
+            model.addAttribute("category", category);
+            model.addAttribute("categoriesPage", categoriesPage);
+            addGlobalAttributes(model, pageable);
+            paging(model, categoriesPage);
+            return "admin/category/index";
+        }
+
         redirectAttributes.addFlashAttribute("message", Message.info("Category edited!"));
         return "redirect:/admin/categories";
     }
