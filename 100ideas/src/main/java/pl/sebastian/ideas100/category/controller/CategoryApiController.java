@@ -38,7 +38,7 @@ public class CategoryApiController {
         return category.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseThrow(NoContentException::new);
 
     }
-    @PostMapping("{id}")
+    @PostMapping
     public ResponseEntity<Category> createCategory(@RequestBody Category category) {
         Category categoryAdded = categoryService.addCategory(category);
 
@@ -47,7 +47,7 @@ public class CategoryApiController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Category> addCategory(@PathVariable("id") UUID id, @RequestBody Category category) {
+    public ResponseEntity<Category> updateCategory(@PathVariable("id") UUID id, @RequestBody Category category) {
         Category categoryFound = categoryService.updateCategory(id, category);
 
         return new ResponseEntity<>(categoryFound, HttpStatus.ACCEPTED);
@@ -57,7 +57,7 @@ public class CategoryApiController {
     public ResponseEntity<Object> removeCategory(@PathVariable("id") UUID id) {
         categoryService.removeCategory(id);
 
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
 

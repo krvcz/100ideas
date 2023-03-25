@@ -76,6 +76,7 @@ class CategoryAdminViewControllerTest {
         mockMvc.perform(MockMvcRequestBuilders.post("/admin/categories/add")
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("name", "Category4")
+
                         )
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/admin/categories"))
