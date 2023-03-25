@@ -2,6 +2,9 @@ package pl.sebastian.ideas100.category.controller;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.internal.stubbing.answers.InvocationInfo;
 import org.mockito.invocation.InvocationOnMock;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +23,11 @@ import pl.sebastian.ideas100.category.service.CategoryService;
 import pl.sebastian.ideas100.common.dto.Message;
 
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.Stream;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -56,6 +62,10 @@ class CategoryAdminViewControllerTest {
                 (InvocationOnMock invocationOnMock) -> invocationOnMock.getArgument(0)
         );
 
+        when(categoryService.updateCategory(any(), any())).thenAnswer(
+                (InvocationOnMock invocationOnMock) -> invocationOnMock.getArgument(1)
+        );
+
     }
 
     @Test
@@ -71,22 +81,24 @@ class CategoryAdminViewControllerTest {
 
     }
 
-    @Test
-    void shouldShowSuccessOfAddingCategory() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/categories/add")
+    @ParameterizedTest
+    @MethodSource("getTestPositiveCases")
+    void shouldShowSuccessOnAddingEditingDeletingCategory(String url, Message message) throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post(url)
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                         .param("name", "Category4")
 
                         )
                 .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
                 .andExpect(MockMvcResultMatchers.redirectedUrl("/admin/categories"))
-                .andExpect(MockMvcResultMatchers.flash().attribute("message", Message.success("Category added!")));
+                .andExpect(MockMvcResultMatchers.flash().attribute("message", message));
 
     }
 
-    @Test
-    void shouldShowFailOfAddingCategory() throws Exception {
-        mockMvc.perform(MockMvcRequestBuilders.post("/admin/categories/add")
+    @ParameterizedTest
+    @MethodSource("getTestFailedCases")
+    void shouldShowFailOfAddingCategory(String url) throws Exception {
+        mockMvc.perform(MockMvcRequestBuilders.post(url)
                         .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -95,6 +107,25 @@ class CategoryAdminViewControllerTest {
                 .andExpect(MockMvcResultMatchers.model().attributeExists("previousPage"))
                 .andExpect(MockMvcResultMatchers.model().attribute("categoriesPage", page))
                 .andExpect(MockMvcResultMatchers.model().hasErrors());
+    }
+
+    private static Stream<Arguments> getTestPositiveCases() {
+        return Stream.of(
+                Arguments.of("/admin/categories/add", Message.success("Category added!")),
+                Arguments.of("/admin/categories/update", Message.info("Category edited!")),
+                Arguments.of("/admin/categories/" + UUID.randomUUID() + "/delete", Message.success("Category deleted!"))
+        );
+
+
+    }
+
+    private static Stream<Arguments> getTestFailedCases() {
+        return Stream.of(
+                Arguments.of("/admin/categories/add"),
+                Arguments.of("/admin/categories/update")
+        );
+
+
     }
 
 }
