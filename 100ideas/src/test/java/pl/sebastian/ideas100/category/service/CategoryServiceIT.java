@@ -17,13 +17,12 @@ import java.util.Optional;
 
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.catchThrowable;
 
 
 @SpringBootTest
 @Transactional
 @Rollback
-class CategoryServiceTest {
+class CategoryServiceIT {
 
     @Autowired
     private CategoryRepository categoryRepository;

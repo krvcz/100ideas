@@ -1,23 +1,30 @@
 package pl.sebastian.ideas100.category.service;
 
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.sebastian.ideas100.category.dto.CategoryStatDto;
 import pl.sebastian.ideas100.category.model.Category;
 import pl.sebastian.ideas100.category.repository.CategoryRepository;
 
 
 
 import java.util.*;
+import java.util.stream.Collectors;
+
 @Service
+@RequiredArgsConstructor
 public class CategoryService {
+
     private final CategoryRepository categoryRepository;
 
-    public CategoryService(CategoryRepository categoryRepository) {
-        this.categoryRepository = categoryRepository;
-    }
+    private final CategoryWithStatsMapper categoryWithStatsMapper;
+
 
     @Transactional(readOnly = true)
     public Page<Category> getCategories(Pageable pageable) {
@@ -58,5 +65,16 @@ public class CategoryService {
         Category newCategory  = new Category();
         newCategory.setName(category.getName());
         return categoryRepository.save(newCategory);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<CategoryStatDto> getCategoriesWithStats(Pageable pageable) {
+
+        Page<Category> categories =  categoryRepository.findAll(pageable);
+
+        return new PageImpl<>(categories.stream()
+                .map(categoryWithStatsMapper::map)
+                .collect(Collectors.toList()), pageable, categories.getTotalElements());
+
     }
 }

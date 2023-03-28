@@ -76,6 +76,11 @@ public class QuestionService {
     }
 
     @Transactional(readOnly = true)
+    public List<Question> getHotQuestionsFromCategory(UUID categoryId, int limit) {
+        return questionRepository.findHotByCategoryId(categoryId, limit);
+    }
+
+    @Transactional(readOnly = true)
     public Page<Question> getUnansweredQuestions(Pageable unansweredPage) {
         return questionRepository.getUnansweredQuestions(unansweredPage);
     }

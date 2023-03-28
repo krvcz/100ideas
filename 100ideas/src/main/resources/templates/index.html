@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="pl" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="template :: head(title = '100 ideas')"></head>
+<body>
+<th:body th:replace="template :: header"></th:body>
+<main class="container">
+    <div class="row g-5">
+        <div class="col-md-12">
+            <article class="blog-post" th:each="categoryStat : ${categoriesStats.getContent()}">
+                <h2 class="blog-post-title">
+                    <a th:href="@{'/categories/' + ${categoryStat.id}}" th:text="${categoryStat.name}"></a>
+                </h2>
+                <p class="blog-post-meta" th:text="'Pytań: '+${categoryStat.questions}+', odpowiedzi: '+${categoryStat.answers}"></p>
+                <table class="table" th:if="${categoryStat.questions>0}">
+                    <thead>
+                    <tr>
+                        <th>Pytanie</th>
+                        <th>Odpowiedzi</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="question : ${@indexViewController.topQuestionsByCategory(categoryStat.id)}">
+                        <td><a th:href="@{'/questions/'+${question.id}}" th:text="${question.content}"></a></td>
+                        <td th:text="${question.answers}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+            </article>
+
+
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-end" th:if="${categoriesStats.totalPages > 0}">
+                    <li class="page-item" >
+                        <a class="page-link" th:href="@{''(size=${categoriesStats.size}, page=${previousPage})}" tabindex="-1">Previous</a>
+                    </li>
+                    <th:block th:each="pageNumber : ${pageNumbers}">
+                        <li class="page-item">
+                            <a class="page-link" href="#" th:href="@{''(size=${categoriesStats.size}, page=${pageNumber}-1)}" th:text="${pageNumber}"></a>
+                        </li>
+                    </th:block>
+                    <li class="page-item">
+                        <a class="page-link" th:href="@{''(size=${categoriesStats.size}, page=${nextPage})}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+
+
+        </div>
+
+    </div>
+
+</main>
+
+<th:body th:replace="template :: footer"></th:body>
+</body>
+
+<!-- jQuery -->
+<script src="/admin/plugins/jquery/jquery.min.js"></script>
+<!-- Custom Js -->
+<script src="/js/custom.js"></script>
+</html>

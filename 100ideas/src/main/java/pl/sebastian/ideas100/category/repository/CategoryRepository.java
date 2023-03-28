@@ -3,7 +3,9 @@ package pl.sebastian.ideas100.category.repository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import pl.sebastian.ideas100.category.dto.CategoryStatDto;
 import pl.sebastian.ideas100.category.model.Category;
 
 import java.util.Optional;
