@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import pl.sebastian.ideas100.category.model.Category;
 import pl.sebastian.ideas100.question.model.Question;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,7 +34,7 @@ public interface QuestionRepository extends JpaRepository<Question, UUID> {
     @Query("from Question q where upper(q.category.name) like concat('%',upper(:query),'%') or upper(q.content) like concat('%',upper(:query),'%')")
     Page<Question> findAllByQuery(@Param("query") String query, Pageable pageable);
 
-
-
+    @Query(value = "select * from questions q order by random() limit :limit", nativeQuery = true)
+    List<Question> findRandomQuestions(@Param("limit") int limit);
 }
 

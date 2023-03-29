@@ -9,11 +9,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import pl.sebastian.ideas100.category.dto.CategoryStatDto;
+import pl.sebastian.ideas100.category.dto.CategoryDTO;
 import pl.sebastian.ideas100.category.model.Category;
 import pl.sebastian.ideas100.category.service.CategoryService;
+import pl.sebastian.ideas100.question.dto.QuestionStatDto;
 import pl.sebastian.ideas100.question.model.Question;
 import pl.sebastian.ideas100.question.service.QuestionService;
+import pl.sebastian.ideas100.question.service.QuestionWithStatsMapper;
 
 import java.util.List;
 import java.util.UUID;
@@ -29,6 +31,8 @@ public class IndexViewController extends CommonViewController {
 
     private final QuestionService questionService;
 
+    private final QuestionWithStatsMapper questionWithStatsMapper;
+
 
 
     @GetMapping
@@ -38,7 +42,7 @@ public class IndexViewController extends CommonViewController {
 
         Pageable pageable = PageRequest.of(page, size);
 
-        Page<CategoryStatDto> categoriesWithStatsDto = categoryService.getCategoriesWithStats(pageable);
+        Page<CategoryDTO> categoriesWithStatsDto = categoryService.getCategoriesWithStats(pageable);
 
         model.addAttribute("categoriesStats", categoriesWithStatsDto);
 
@@ -49,10 +53,14 @@ public class IndexViewController extends CommonViewController {
 
     }
 
-    // TODO zmiana na DTO
-    public List<Question> topQuestionsByCategory(UUID categoryId) {
-        List<Question> topQuestions = questionService.getHotQuestionsFromCategory(categoryId, 2);
-        return topQuestions;
+    public List<QuestionStatDto> generateRandomQuestions(){
+        return questionService.findRandom(2);
+
     }
+
+    public List<QuestionStatDto> generateHotQuestionsPerCategory(UUID categoryId) {
+        return questionService.getHotQuestionsFromCategory(categoryId, 2);
+    }
+
 
 }

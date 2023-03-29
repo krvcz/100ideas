@@ -1,27 +1,27 @@
 package pl.sebastian.ideas100.category.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.sebastian.ideas100.category.dto.CategoryDTO;
 import pl.sebastian.ideas100.category.model.Category;
-import pl.sebastian.ideas100.exception.NoContentException;
+import pl.sebastian.ideas100.category.service.CategoryWithStatsMapper;
 import pl.sebastian.ideas100.category.service.CategoryService;
 
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/categories")
+@RequiredArgsConstructor
 public class CategoryApiController {
 
     private final CategoryService categoryService;
 
-    public CategoryApiController(CategoryService categoryService) {
-        this.categoryService = categoryService;
-    }
+    private final CategoryWithStatsMapper categoryWithStatsMapper;
+
 
     @GetMapping
     public ResponseEntity<Page<Category>> showCategories(Pageable pageable) {
@@ -31,24 +31,25 @@ public class CategoryApiController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Category> getCategoryById(@PathVariable("id") UUID id) {
+    public ResponseEntity<CategoryDTO> getCategoryById(@PathVariable("id") UUID id) {
 
-        Optional<Category> category = categoryService.getCategory(id);
+        CategoryDTO category = categoryService.getCategory(id);
 
-        return category.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseThrow(NoContentException::new);
+
+        return new ResponseEntity<>(category, HttpStatus.OK);
 
     }
     @PostMapping
-    public ResponseEntity<Category> createCategory(@RequestBody Category category) {
-        Category categoryAdded = categoryService.addCategory(category);
+    public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO category) {
+        CategoryDTO categoryAdded = categoryService.addCategory(category);
 
         return new ResponseEntity<>(categoryAdded, HttpStatus.CREATED);
 
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Category> updateCategory(@PathVariable("id") UUID id, @RequestBody Category category) {
-        Category categoryFound = categoryService.updateCategory(id, category);
+    public ResponseEntity<CategoryDTO> updateCategory(@PathVariable("id") UUID id, @RequestBody CategoryDTO category) {
+        CategoryDTO categoryFound = categoryService.updateCategory(id, category);
 
         return new ResponseEntity<>(categoryFound, HttpStatus.ACCEPTED);
     }

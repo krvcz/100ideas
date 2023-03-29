@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Size;
 import lombok.Data;
 import pl.sebastian.ideas100.question.model.Question;
 
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -31,7 +32,9 @@ public class Category {
     }
 
     public Category() {
+
         this.id = UUID.randomUUID();
+        this.questions = new LinkedHashSet<>();
     }
 
 }

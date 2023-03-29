@@ -6,16 +6,20 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.sebastian.ideas100.question.dto.QuestionStatDto;
 import pl.sebastian.ideas100.question.model.Question;
 import pl.sebastian.ideas100.exception.NoContentException;
 import pl.sebastian.ideas100.question.repository.QuestionRepository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class QuestionService {
     private final QuestionRepository questionRepository;
+
+    private final QuestionWithStatsMapper questionWithStatsMapper;
 
     @Transactional(readOnly = true)
     public Page<Question> getQuestions(Pageable pageable) {
@@ -76,8 +80,10 @@ public class QuestionService {
     }
 
     @Transactional(readOnly = true)
-    public List<Question> getHotQuestionsFromCategory(UUID categoryId, int limit) {
-        return questionRepository.findHotByCategoryId(categoryId, limit);
+    public List<QuestionStatDto> getHotQuestionsFromCategory(UUID categoryId, int limit) {
+        return questionRepository.findHotByCategoryId(categoryId, limit).stream()
+                .map(questionWithStatsMapper::map)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
@@ -88,5 +94,13 @@ public class QuestionService {
     @Transactional(readOnly = true)
     public Page<Question> getQuestionsFromQuery(String query, Pageable pageable) {
         return questionRepository.findAllByQuery(query, pageable);
+    }
+
+    @Transactional(readOnly = true)
+    public List<QuestionStatDto> findRandom(int limit) {
+        return questionRepository.findRandomQuestions(limit).stream()
+                .map(questionWithStatsMapper::map)
+                .collect(Collectors.toList());
+
     }
 }

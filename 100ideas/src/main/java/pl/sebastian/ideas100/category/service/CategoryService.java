@@ -4,11 +4,10 @@ package pl.sebastian.ideas100.category.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import pl.sebastian.ideas100.category.dto.CategoryStatDto;
+import pl.sebastian.ideas100.category.dto.CategoryDTO;
 import pl.sebastian.ideas100.category.model.Category;
 import pl.sebastian.ideas100.category.repository.CategoryRepository;
 
@@ -42,16 +41,20 @@ public class CategoryService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Category> getCategory(UUID id) {
-        return categoryRepository.findById(id);
+    public CategoryDTO getCategory(UUID id) {
+        return categoryWithStatsMapper.map(categoryRepository.getById(id));
     }
 
-    @Transactional
-    public Category updateCategory(UUID id, Category category) {
-        Category oldCategory = categoryRepository.getById(id);
-        oldCategory.setName(category.getName());
 
-        return categoryRepository.save(oldCategory);
+    @Transactional
+    public CategoryDTO updateCategory(UUID id, CategoryDTO category) {
+        Category oldCategory = categoryRepository.getById(id);
+        Category  newCategory = categoryWithStatsMapper.map(category);
+
+        oldCategory.setName(newCategory.getName());
+
+
+        return categoryWithStatsMapper.map(categoryRepository.save(oldCategory));
 
     }
 
@@ -61,14 +64,14 @@ public class CategoryService {
     }
 
     @Transactional
-    public Category addCategory(Category category) {
+    public CategoryDTO addCategory(CategoryDTO category) {
         Category newCategory  = new Category();
-        newCategory.setName(category.getName());
-        return categoryRepository.save(newCategory);
+        newCategory.setName(categoryWithStatsMapper.map(category).getName());
+        return categoryWithStatsMapper.map(categoryRepository.save(newCategory));
     }
 
     @Transactional(readOnly = true)
-    public Page<CategoryStatDto> getCategoriesWithStats(Pageable pageable) {
+    public Page<CategoryDTO> getCategoriesWithStats(Pageable pageable) {
 
         Page<Category> categories =  categoryRepository.findAll(pageable);
 

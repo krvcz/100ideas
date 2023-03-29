@@ -2,7 +2,6 @@ package pl.sebastian.ideas100.category.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -12,17 +11,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pl.sebastian.ideas100.category.dto.CategoryDTO;
 import pl.sebastian.ideas100.category.model.Category;
 import pl.sebastian.ideas100.category.service.CategoryService;
 import pl.sebastian.ideas100.common.dto.Message;
 import pl.sebastian.ideas100.common.utils.Controller.CommonViewController;
-import pl.sebastian.ideas100.common.utils.Controller.ControllerUtils;
 
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 import static pl.sebastian.ideas100.common.utils.Controller.ControllerUtils.*;
 
@@ -35,7 +31,7 @@ public class CategoryAdminViewController extends CommonViewController {
 
     @GetMapping
     public String categoriesView(Model model,
-                                 @ModelAttribute("category") Category category,
+                                 @ModelAttribute("category") CategoryDTO category,
                                  @RequestParam(value = "size", required = false, defaultValue = "10") int size,
                                  @RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                  @RequestParam(value = "field", required = false, defaultValue = "id") String field,
@@ -66,7 +62,7 @@ public class CategoryAdminViewController extends CommonViewController {
  }
 
     @PostMapping(value = "add")
-    public String add(@Valid @ModelAttribute("category") Category category,
+    public String add(@Valid @ModelAttribute("category") CategoryDTO category,
                       BindingResult bindingResult,
                       RedirectAttributes redirectAttributes,
                       Model model,
@@ -106,7 +102,7 @@ public class CategoryAdminViewController extends CommonViewController {
     }
 
     @PostMapping(value = "update")
-    public String edit(@Valid @ModelAttribute("category") Category category,
+    public String edit(@Valid @ModelAttribute("category") CategoryDTO category,
                        BindingResult bindingResult,
                        RedirectAttributes redirectAttributes,
                        Model model,
@@ -142,8 +138,7 @@ public class CategoryAdminViewController extends CommonViewController {
     }
 
     @PostMapping("/{categoryId}/delete")
-    public String delete(@ModelAttribute("category") Category category,
-                         RedirectAttributes redirectAttributes,
+    public String delete(RedirectAttributes redirectAttributes,
                          @PathVariable UUID categoryId) {
         categoryService.removeCategory(categoryId);
         redirectAttributes.addFlashAttribute("message", Message.success("Category deleted!"));

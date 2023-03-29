@@ -1,23 +1,35 @@
 package pl.sebastian.ideas100.category.service;
 
 import org.springframework.stereotype.Component;
-import pl.sebastian.ideas100.category.dto.CategoryStatDto;
+import pl.sebastian.ideas100.category.dto.CategoryDTO;
 import pl.sebastian.ideas100.category.model.Category;
 import pl.sebastian.ideas100.question.model.Question;
 
 @Component
 public class CategoryWithStatsMapper {
 
-    public CategoryStatDto map(Category category) {
-        CategoryStatDto categoryStatDto = new CategoryStatDto();
+    public CategoryDTO map(Category category) {
+        CategoryDTO categoryDTO = new CategoryDTO();
 
-        categoryStatDto.setId(category.getId());
-        categoryStatDto.setName(category.getName());
-        categoryStatDto.setQuestions(category.getQuestions().size());
-        categoryStatDto.setAnswers(category.getQuestions().stream()
+        categoryDTO.setId(category.getId());
+        categoryDTO.setName(category.getName());
+
+
+        categoryDTO.setQuestions(category.getQuestions().size());
+        categoryDTO.setAnswers(category.getQuestions().stream()
                 .map(Question::getAnswers).count());
 
-        return categoryStatDto;
+        return categoryDTO;
+    }
+
+    public Category map(CategoryDTO categoryDTO) {
+        Category category = new Category();
+
+        category.setId(categoryDTO.getId());
+        category.setName(categoryDTO.getName());
+
+
+        return category;
     }
 
 
