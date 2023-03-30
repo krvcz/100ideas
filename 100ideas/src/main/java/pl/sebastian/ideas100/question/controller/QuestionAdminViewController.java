@@ -19,6 +19,7 @@ import pl.sebastian.ideas100.category.service.CategoryService;
 import pl.sebastian.ideas100.common.dto.Message;
 import pl.sebastian.ideas100.common.utils.Controller.CommonViewController;
 import pl.sebastian.ideas100.common.utils.Controller.ControllerUtils;
+import pl.sebastian.ideas100.question.dto.QuestionStatDto;
 import pl.sebastian.ideas100.question.model.Question;
 import pl.sebastian.ideas100.question.service.QuestionService;
 
@@ -39,7 +40,7 @@ public class QuestionAdminViewController extends CommonViewController {
 
     @GetMapping
     public String questionsView(Model model,
-                                @ModelAttribute("question") Question question,
+                                @ModelAttribute("question") QuestionStatDto question,
                                 @RequestParam(value = "size", required = false, defaultValue = "10") int size,
                                 @RequestParam(value = "page", required = false, defaultValue = "0") int page,
                                 @RequestParam(value = "field", required = false, defaultValue = "id") String field,
@@ -70,7 +71,7 @@ public class QuestionAdminViewController extends CommonViewController {
     }
 
     @PostMapping(value = "add")
-    public String add(@Valid @ModelAttribute("question") Question question,
+    public String add(@Valid @ModelAttribute("question") QuestionStatDto question,
                       BindingResult bindingResult,
                       RedirectAttributes redirectAttributes,
                       @RequestParam(value = "size", required = false, defaultValue = "10") int size,
@@ -95,21 +96,45 @@ public class QuestionAdminViewController extends CommonViewController {
 
 
         questionService.addQuestion(question);
-//        redirectAttributes.addFlashAttribute("success", Message.success("Question added!"));
         redirectAttributes.addFlashAttribute("message", Message.success("Question added!"));
 
         return "redirect:/admin/questions";
     }
 
+
     @PostMapping(value = "update")
-    public String edit(@Valid @ModelAttribute("question") Question question,
-                       RedirectAttributes redirectAttributes) {
-        questionService.updateQuestion(question.getId(), question);
+    public String edit(@Valid @ModelAttribute("question") QuestionStatDto questionStatDto,
+                      BindingResult bindingResult,
+                      RedirectAttributes redirectAttributes,
+                      @RequestParam(value = "size", required = false, defaultValue = "10") int size,
+                      @RequestParam(value = "page", required = false, defaultValue = "0") int page,
+                      Model model) {
+
+        if (bindingResult.hasErrors()) {
+            Pageable pageable = PageRequest.of(page, size);
+
+            Page<Question> questionPage = questionService.getQuestions(pageable, null);
+
+            model.addAttribute("questionsPage", questionPage);
+            model.addAttribute("search", null);
+            model.addAttribute("reverseSort", "asc");
+
+            addGlobalAttributes(model, pageable);
+            paging(model, questionPage);
+
+
+            return "admin/question/index";
+        }
+
+
+        questionService.updateQuestion(questionStatDto.getId(), questionStatDto);
         redirectAttributes.addFlashAttribute("message", Message.success("Question edited!"));
-        System.out.println(question.getCategory().getId());
-        System.out.println(question.getCategory());
+
         return "redirect:/admin/questions";
     }
+
+
+
 
     @PostMapping("/{questionId}/delete")
     public String delete(@ModelAttribute("question") Question question,

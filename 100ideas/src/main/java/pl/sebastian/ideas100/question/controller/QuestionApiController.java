@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import pl.sebastian.ideas100.question.dto.QuestionStatDto;
 import pl.sebastian.ideas100.question.model.Question;
 import pl.sebastian.ideas100.exception.NoContentException;
 import pl.sebastian.ideas100.question.service.QuestionService;
@@ -31,25 +32,25 @@ public class QuestionApiController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Question> getQuestionById(@PathVariable("id") UUID id) {
-        Optional<Question> question = questionService.getQuestion(id);
+    public ResponseEntity<QuestionStatDto> getQuestionById(@PathVariable("id") UUID id) {
+        QuestionStatDto question = questionService.getQuestion(id);
 
-        return question.map(value -> new ResponseEntity<>(value, HttpStatus.OK)).orElseThrow(NoContentException::new);
+        return  new ResponseEntity<>(question, HttpStatus.OK);
 
     }
 
     @PostMapping()
-    public ResponseEntity<Question> createQuestion(Question question) {
-        Question questionAdded = questionService.addQuestion(question);
+    public ResponseEntity<Question> createQuestion(QuestionStatDto questionStatDto) {
+        Question questionAdded = questionService.addQuestion(questionStatDto);
 
         return new ResponseEntity<>(questionAdded, HttpStatus.CREATED);
 
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Question> addQuestion(@RequestBody Question question) {
+    public ResponseEntity<Question> addQuestion(@RequestBody QuestionStatDto questionStatDto) {
         UUID id = UUID.randomUUID();
-        Question questionFound = questionService.updateQuestion(id, question);
+        Question questionFound = questionService.updateQuestion(id, questionStatDto);
 
         return new ResponseEntity<>(questionFound, HttpStatus.ACCEPTED);
     }

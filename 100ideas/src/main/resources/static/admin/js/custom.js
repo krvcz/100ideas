@@ -12,7 +12,7 @@ $('document').ready(function() {
 
     $.get(href, function(question, status) {
         $('#ContentEdit').val(question.content);
-        $('#CategoryEdit').val(question.category.id);
+        $('#CategoryEdit').val(question.categoryId);
 
         });
 

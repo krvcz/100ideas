@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import pl.sebastian.ideas100.category.repository.CategoryRepository;
 import pl.sebastian.ideas100.question.dto.QuestionStatDto;
 import pl.sebastian.ideas100.question.model.Question;
 import pl.sebastian.ideas100.exception.NoContentException;
@@ -18,6 +19,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class QuestionService {
     private final QuestionRepository questionRepository;
+
+    private  final CategoryRepository categoryRepository;
 
     private final QuestionWithStatsMapper questionWithStatsMapper;
 
@@ -43,16 +46,17 @@ public class QuestionService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Question> getQuestion(UUID id) {
-        return questionRepository.findById(id);
+    public QuestionStatDto getQuestion(UUID id) {
+        return questionWithStatsMapper.map(questionRepository.getById(id));
     }
 
     @Transactional
-    public Question updateQuestion(UUID id, Question question) {
+    public Question updateQuestion(UUID id, QuestionStatDto questionStatDto) {
         Question oldQuestion = questionRepository.getById(id);
+        Question newQuestion = questionWithStatsMapper.map(questionStatDto);
 
-        oldQuestion.setCategory(question.getCategory());
-        oldQuestion.setContent(question.getContent());
+        oldQuestion.setCategory(newQuestion.getCategory());
+        oldQuestion.setContent(newQuestion.getContent());
 
         return oldQuestion;
     }
@@ -63,11 +67,14 @@ public class QuestionService {
     }
 
     @Transactional
-    public Question addQuestion(Question question) {
+    public Question addQuestion(QuestionStatDto questionStatDto) {
         Question newQuestion = new Question();
 
-        newQuestion.setContent(question.getContent());
+        Question question = questionWithStatsMapper.map(questionStatDto);
+
         newQuestion.setCategory(question.getCategory());
+        newQuestion.setContent(question.getContent());
+
 
         questionRepository.save(newQuestion);
 

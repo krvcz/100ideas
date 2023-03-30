@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.sebastian.ideas100.IdeasConfiguration;
 import pl.sebastian.ideas100.common.dto.Message;
 import pl.sebastian.ideas100.common.utils.Controller.CommonViewController;
+import pl.sebastian.ideas100.question.dto.QuestionStatDto;
 import pl.sebastian.ideas100.question.model.Question;
 import pl.sebastian.ideas100.question.service.AnswerService;
 import pl.sebastian.ideas100.category.service.CategoryService;
@@ -60,19 +61,19 @@ public class QuestionViewController extends CommonViewController {
     }
 
     @PostMapping(value ="add")
-    public String add(@Valid @ModelAttribute("question") Question question,
+    public String add(@Valid @ModelAttribute("question") QuestionStatDto questionStatDto,
                       BindingResult bindingResult,
                       RedirectAttributes redirectAttributes,
                       Model model) {
 
 
         if (bindingResult.hasErrors()) {
-            model.addAttribute("question", question);
+            model.addAttribute("question", questionStatDto);
             addGlobalAttributes(model);
             return "question/add";
         }
 
-        Question addedQuestion = questionService.addQuestion(question);
+        Question addedQuestion = questionService.addQuestion(questionStatDto);
         redirectAttributes.addFlashAttribute("success", Message.success("Question added!"));
         return "redirect:/questions/" + addedQuestion.getId();
     }

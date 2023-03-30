@@ -112,25 +112,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <span><strong>Delete</strong></span>
                       </a>
 
-                      <!--                                            <a th:href="@{'/admin/categories/' + ${category.id} + '/delete'}" class="btn btn-danger a-btn-slide-text delete" methods="post">-->
-                      <!--                                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>-->
-                      <!--                                                <span><strong>Delete</strong></span>-->
-                      <!--                                            </a>-->
-
-                      <!--                                            <form th:action="@{'/admin/categories/' +  ${category.id} + '/delete'}" th:object="${category}" method="post">-->
-                      <!--                                                <a onclick="this.parentNode.submit();"  class="btn btn-danger a-btn-slide-text">-->
-                      <!--                                                    <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>-->
-                      <!--                                                    <span><strong>x</strong></span>-->
-                      <!--                                                </a>-->
-                      <!--                                            </form>-->
                     </td>
 
 
-                    <!--                                            <form th:action="@{'/admin/categories/delete'}" th:object="${category}" method="post">-->
-                    <!--                                                <input th:field="*{id}" type="hidden" class="form-control"  >-->
-                    <!--                                                <input th:field="*{name}" type="hidden" class="form-control"  >-->
-                    <!--                                                <button type="submit" name="your_name" value="your_value" class="btn btn-danger a-btn-slide-text">Delete</button>-->
-                    <!--                                            </form>-->
 
                     </td>
 
@@ -178,7 +162,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <label for="NameAdd">Name</label>
                     <input th:field="*{content}" type="text" class="form-control" id="NameAdd" placeholder="Enter question">
                     <label for="CategoryAdd">Category</label>
-                    <select th:field="*{category}"  id="CategoryAdd" class="form-control">
+                    <select th:field="*{categoryId}"  id="CategoryAdd" class="form-control">
                       <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
                     </select>
                   </div>
@@ -211,7 +195,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <label for="ContentEdit">Content</label>
                     <input th:field="*{content}" type="text" class="form-control" id="ContentEdit" placeholder="Enter content">
                     <label for="CategoryEdit">Category</label>
-                    <select th:field="*{category}" id="CategoryEdit" class="form-control">
+                    <select th:field="*{categoryId}" id="CategoryEdit" class="form-control">
                       <option th:each="category : ${categories.content}" th:value="${category.id}" th:text="${category.name}"></option>
                     </select>
 
