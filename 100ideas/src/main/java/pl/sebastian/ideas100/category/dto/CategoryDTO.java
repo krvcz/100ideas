@@ -21,6 +21,10 @@ public class CategoryDTO {
 
     private long answers;
 
+    public CategoryDTO(String name){
+        this.name = name;
+    }
+
 
 
 

@@ -1,6 +1,7 @@
 package pl.sebastian.ideas100.question.service;
 
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,16 +37,22 @@ class QuestionServiceIT {
     @Autowired
     private AnswerRepository answerRepository;
 
+    @Autowired
+    private QuestionWithStatsMapper questionWithStatsMapper;
+
     private static Category category;
 
-    @BeforeAll
-    public static void setUp(){
+
+
+    @BeforeEach
+    public  void setUp(){
         category = new Category("testowa");
     }
 
     @Test
     void shouldGetQuestions() {
         // Given
+        answerRepository.deleteAll();
         questionRepository.deleteAll();
 
         categoryRepository.save(category);
@@ -78,6 +85,7 @@ class QuestionServiceIT {
     @Test
     void shouldAddQuestions() {
         // Given
+        answerRepository.deleteAll();
         questionRepository.deleteAll();
 
         categoryRepository.save(category);
@@ -92,9 +100,9 @@ class QuestionServiceIT {
 
 
         // When
-        Question testedQuestion1 = questionService.addQuestion(question1);
-        Question testedQuestion2 =questionService.addQuestion(question2);
-        Question testedQuestion3 =questionService.addQuestion(question3);
+        Question testedQuestion1 = questionService.addQuestion(questionWithStatsMapper.map(question1));
+        Question testedQuestion2 =questionService.addQuestion(questionWithStatsMapper.map(question2));
+        Question testedQuestion3 =questionService.addQuestion(questionWithStatsMapper.map(question3));
 
         List<Question> questionList = questionRepository.findAll();
 
@@ -114,6 +122,7 @@ class QuestionServiceIT {
     void shouldReturnTwoQuestionsByKeyword() {
 
         // Given
+        answerRepository.deleteAll();
         questionRepository.deleteAll();
         categoryRepository.save(category);
 
@@ -145,6 +154,7 @@ class QuestionServiceIT {
     void shouldReturnHotQuestions() {
 
         // Given
+        answerRepository.deleteAll();
         questionRepository.deleteAll();
         categoryRepository.save(category);
         Question question1 = new Question("Question11");
@@ -189,6 +199,7 @@ class QuestionServiceIT {
     @Test
     void shouldReturnUnansweredQuestions() {
         // Given
+        answerRepository.deleteAll();
         questionRepository.deleteAll();
         categoryRepository.save(category);
         Question question1 = new Question("Question11");
@@ -233,6 +244,7 @@ class QuestionServiceIT {
     @Test
     void shouldRemoveQuestion() {
         // Given
+        answerRepository.deleteAll();
         questionRepository.deleteAll();
         categoryRepository.save(category);
         Question question1 = new Question("Question11");
@@ -257,6 +269,7 @@ class QuestionServiceIT {
     @Test
     void shouldThrowExceptionWhileRemovingNotExistingQuestion() {
         // Given
+        answerRepository.deleteAll();
         questionRepository.deleteAll();
         categoryRepository.save(category);
         Question question1 = new Question("Question11");
@@ -276,6 +289,7 @@ class QuestionServiceIT {
     @Test
     void shouldUpdateQuestion() {
         // Given
+        answerRepository.deleteAll();
         questionRepository.deleteAll();
         categoryRepository.saveAndFlush(category);
         Question question1 = new Question("Question11");
@@ -291,8 +305,8 @@ class QuestionServiceIT {
 
 
         // when
-        questionService.updateQuestion(question1.getId(), newQuestion1);
-        questionService.updateQuestion(question2.getId(), newQuestion2);
+        questionService.updateQuestion(question1.getId(), questionWithStatsMapper.map(newQuestion1));
+        questionService.updateQuestion(question2.getId(), questionWithStatsMapper.map(newQuestion2));
 
         // Then
         assertThat(questionRepository.findAll()).extracting(Question::getContent)
@@ -302,6 +316,7 @@ class QuestionServiceIT {
     @Test
     void shouldFindAllByCategoryId() {
         // Given
+        answerRepository.deleteAll();
         questionRepository.deleteAll();
         categoryRepository.save(category);
         Question question1 = new Question("Question11");

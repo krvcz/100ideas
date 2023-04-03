@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import pl.sebastian.ideas100.category.dto.CategoryDTO;
 import pl.sebastian.ideas100.category.model.Category;
 import pl.sebastian.ideas100.category.repository.CategoryRepository;
 import pl.sebastian.ideas100.question.repository.AnswerRepository;
@@ -35,6 +36,9 @@ class CategoryServiceIT {
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private CategoryWithStatsMapper categoryWithStatsMapper;
 
     @BeforeEach
     void setUp() {
@@ -94,11 +98,10 @@ class CategoryServiceIT {
                 .get(0);
 
         // When
-        Optional<Category> category = categoryService.getCategory(categoryRepo.getId());
+        Category category = categoryWithStatsMapper.map(categoryService.getCategory(categoryRepo.getId()));
 
         // Then
-        assertThat(category).isPresent()
-                .get()
+        assertThat(category)
                 .isEqualTo(categoryRepo)
                 .extracting(Category::getName)
                 .isEqualTo("Category3");
@@ -108,13 +111,13 @@ class CategoryServiceIT {
     @Test
     void shouldUpdateCategory() {
         // Given
-        Category category = new Category("Category4");
+        CategoryDTO category = new CategoryDTO("Category4");
         Category categoryRepo = categoryRepository.findAllByNameContainingIgnoreCase("Category3", Pageable.unpaged())
                 .getContent()
                 .get(0);
 
         // When
-        Category updatedCategory = categoryService.updateCategory(categoryRepo.getId(), category);
+        Category updatedCategory = categoryWithStatsMapper.map(categoryService.updateCategory(categoryRepo.getId(), category));
 
         // Then
         assertThat(updatedCategory).extracting(Category::getName)
@@ -149,7 +152,7 @@ class CategoryServiceIT {
     @Test
     void addCategory() {
         // Given
-        Category category = new Category("Category4");
+        CategoryDTO category = new CategoryDTO("Category4");
 
 
         // When

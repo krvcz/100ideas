@@ -44,6 +44,7 @@ class AnswerServiceIT {
 
     @BeforeEach
      void setUp() {
+        answerRepository.deleteAll();
         questionRepository.deleteAll();
         categoryRepository.deleteAll();
         question = new Question("Question11");

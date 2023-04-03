@@ -16,8 +16,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import pl.sebastian.ideas100.category.dto.CategoryDTO;
 import pl.sebastian.ideas100.category.model.Category;
 import pl.sebastian.ideas100.category.service.CategoryService;
+import pl.sebastian.ideas100.category.service.CategoryWithStatsMapper;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,9 +41,12 @@ class CategoryApiControllerTest {
     @Autowired
     public ObjectMapper objectMapper;
 
+    @Autowired
+    public CategoryWithStatsMapper categoryWithStatsMapper;
+
     private PageImpl<Category> page;
 
-    private Category category;
+    private CategoryDTO category;
 
     @BeforeEach
     void setUp() {
@@ -53,14 +58,14 @@ class CategoryApiControllerTest {
                 )
         );
 
-        category =  page.getContent().get(0);
+        category =  categoryWithStatsMapper.map(page.getContent().get(0));
 
 
         when(categoryService.getCategories(any(), any())).thenReturn(page);
 
         when(categoryService.getCategories(any())).thenReturn(page);
 
-        when(categoryService.getCategory(any())).thenReturn(Optional.of(page.getContent().get(0)));
+        when(categoryService.getCategory(any())).thenReturn(categoryWithStatsMapper.map(page.getContent().get(0)));
 
         when(categoryService.addCategory(any())).thenAnswer(
                 (InvocationOnMock invocationOnMock) -> invocationOnMock.getArgument(0)

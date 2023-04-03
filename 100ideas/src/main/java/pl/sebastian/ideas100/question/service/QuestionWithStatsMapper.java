@@ -17,7 +17,7 @@ public class QuestionWithStatsMapper {
 
         questionStatDto.setId(question.getId());
         questionStatDto.setContent(question.getContent());
-        questionStatDto.setAnswers(question.getAnswers().size());
+        questionStatDto.setAnswers(question.getAnswers() != null ? question.getAnswers().size() : 0);
         questionStatDto.setCategory(question.getCategory().getName());
         questionStatDto.setCategoryId(question.getCategory().getId());
 
