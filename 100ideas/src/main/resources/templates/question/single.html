@@ -1,15 +1,17 @@
 
 <!DOCTYPE html>
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="template :: head(title = '100 ideas' + ' - ' + ${question.get().content})"></head>
+<head th:replace="template :: head(title = '100 ideas' + ' - ' + ${question.content})"></head>
 <body>
 <th:body th:replace="template :: header"></th:body>
+
 <main class="container">
   <div class="row g-5">
+    <hr />
     <div class="col-md-12">
       <div class="alert alert-success" role="alert" th:text="${success.msg}" th:if="${success}"></div>
       <article class="blog-post">
-        <h2 class="blog-post-title mb-1" th:text="${question.get().content}">Sample blog post</h2>
+        <h2 class="blog-post-title mb-1" th:text="${question.content}">Sample blog post</h2>
 
         <h3>Answers</h3>
         <table class="table">

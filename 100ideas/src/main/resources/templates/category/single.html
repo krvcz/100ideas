@@ -4,8 +4,10 @@
 <head th:replace="template :: head(title = '100 ideas' + ' - ' + ${category.name})"></head>
 <body>
 <th:body th:replace="template :: header"></th:body>
+
 <main class="container">
   <div class="row g-5">
+    <hr />
     <div class="col-md-12">
       <article class="blog-post">
         <h2 class="blog-post-title mb-1" th:text="${category.name}">Sample blog post</h2>

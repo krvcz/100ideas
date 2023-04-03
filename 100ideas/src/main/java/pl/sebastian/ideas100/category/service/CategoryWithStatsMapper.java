@@ -5,6 +5,11 @@ import pl.sebastian.ideas100.category.dto.CategoryDTO;
 import pl.sebastian.ideas100.category.model.Category;
 import pl.sebastian.ideas100.question.model.Question;
 
+import java.util.Collection;
+import java.util.Collections;
+
+
+
 @Component
 public class CategoryWithStatsMapper {
 
@@ -17,7 +22,9 @@ public class CategoryWithStatsMapper {
 
         categoryDTO.setQuestions(category.getQuestions().size());
         categoryDTO.setAnswers(category.getQuestions().stream()
-                .map(Question::getAnswers).count());
+                .map(Question::getAnswers)
+                .mapToLong(Collection::size)
+                .sum());
 
         return categoryDTO;
     }
