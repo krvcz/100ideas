@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.sebastian.ideas100.category.dto.CategoryDTO;
 import pl.sebastian.ideas100.category.model.Category;
 import pl.sebastian.ideas100.category.repository.CategoryRepository;
-
+import pl.sebastian.ideas100.common.dto.StatisticsDTO;
 
 
 import java.util.*;
@@ -78,6 +78,13 @@ public class CategoryService {
         return new PageImpl<>(categories.stream()
                 .map(categoryWithStatsMapper::map)
                 .collect(Collectors.toList()), pageable, categories.getTotalElements());
+
+    }
+
+    @Transactional(readOnly = true)
+    public StatisticsDTO getAllStatistics() {
+
+        return categoryRepository.generateStats();
 
     }
 }
