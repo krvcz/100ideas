@@ -2,6 +2,7 @@ package pl.sebastian.ideas100.category.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
@@ -13,9 +14,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import pl.sebastian.ideas100.IdeasConfiguration;
 import pl.sebastian.ideas100.category.service.CategoryService;
 import pl.sebastian.ideas100.common.utils.Controller.CommonViewController;
+import pl.sebastian.ideas100.common.utils.Controller.ControllerUtils;
+import pl.sebastian.ideas100.question.dto.QuestionStatDto;
+import pl.sebastian.ideas100.question.model.Question;
 import pl.sebastian.ideas100.question.service.QuestionService;
 
 import java.util.UUID;
+
+import static pl.sebastian.ideas100.common.utils.Controller.ControllerUtils.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -36,8 +42,15 @@ public class CategoryViewController extends CommonViewController{
 
         Pageable pageable = PageRequest.of(page, Integer.parseInt(ideasConfiguration.getPageSize()));
         addGlobalAttributes(model, pageable);
+
+        Page<Question> questionPage = questionService.getQuestionsFromCategory(categoryId, pageable);
+
+
         model.addAttribute("category", categoryService.getCategory(categoryId));
-        model.addAttribute("questionsPage", questionService.getQuestionsFromCategory(categoryId, pageable));
+        model.addAttribute("questionsPage", questionPage);
+
+        paging(model, questionPage);
+        addGlobalAttributes(model, pageable);
 
         return "category/single";
     }

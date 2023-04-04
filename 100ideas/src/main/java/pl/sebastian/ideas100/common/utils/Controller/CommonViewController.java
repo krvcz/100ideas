@@ -19,8 +19,9 @@ public abstract class CommonViewController {
     public void addGlobalAttributes(Model model, Pageable pageable) {
         model.addAttribute("categories", categoryService.getCategories(Pageable.unpaged()));
         Integer nextPage = pageable.next().getPageNumber();
-        Integer previousPage = pageable.previousOrFirst().getPageNumber();
+        Pageable previousPage = pageable.previousOrFirst();
         model.addAttribute("nextPage", nextPage);
-        model.addAttribute("previousPage", previousPage);
+        model.addAttribute("previousPage", previousPage.getPageNumber());
+        model.addAttribute("hasPreviousPage", previousPage.hasPrevious());
     }
 }

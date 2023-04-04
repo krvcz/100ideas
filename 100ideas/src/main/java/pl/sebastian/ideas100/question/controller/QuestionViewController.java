@@ -52,7 +52,7 @@ public class QuestionViewController extends CommonViewController {
     }
 
     @GetMapping("add")
-    public String addView(@ModelAttribute("question") Question question,
+    public String addView(@ModelAttribute("question") QuestionStatDto question,
                           Model model){
 
         addGlobalAttributes(model);

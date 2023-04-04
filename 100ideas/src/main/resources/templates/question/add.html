@@ -25,8 +25,8 @@
                         <div class="form-group row">
                             <label for="CategoryAdd" class="col-sm-2 col-form-label">Category</label>
                             <div class="col-sm-10">
-                                <p th:if="${#fields.hasErrors('*{category}')}" th:errorclass="error" th:errors="*{category}"></p>
-                                <select th:field="*{category}"  id="CategoryAdd" class="form-control">
+                                <p th:if="${#fields.hasErrors('*{categoryId}')}" th:errorclass="error" th:errors="*{categoryId}"></p>
+                                <select th:field="*{categoryId}"  id="CategoryAdd" class="form-control">
                                     <option th:each="category : ${categories}" th:value="${category.id}" th:text="${category.name}"></option>
                                 </select>
                             </div>

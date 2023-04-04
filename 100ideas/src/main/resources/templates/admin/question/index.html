@@ -125,7 +125,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 </table>
                 <nav aria-label="Page navigation example">
                   <ul class="pagination justify-content-end" th:if="${questionsPage.totalPages > 0}">
-                    <li class="page-item" >
+                    <li class="page-item"  th:class="${questionsPage.getNumber() == 0 } ? 'page-item disabled' : 'page-item'">
                       <a class="page-link" th:href="@{'/admin/questions'(size=${questionsPage.size}, page=${previousPage})}" tabindex="-1">Previous</a>
                     </li>
                     <th:block th:each="pageNumber : ${pageNumbers}">
@@ -133,7 +133,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
                         <a class="page-link" href="#" th:href="@{'/admin/questions'(size=${questionsPage.size}, page=${pageNumber}-1)}" th:text="${pageNumber}"></a>
                       </li>
                     </th:block>
-                    <li class="page-item">
+                    <li class="page-item" th:class="${nextPage >= pageNumbers.size()} ? 'page-item disabled' : 'page-item' ">
                       <a class="page-link" th:href="@{'/admin/questions'(size=${questionsPage.size}, page=${nextPage})}">Next</a>
                     </li>
                   </ul>

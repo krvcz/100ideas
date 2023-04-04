@@ -14,6 +14,7 @@ public abstract class ControllerUtils {
             List<Integer> pageNumbers = IntStream.rangeClosed(1, totalPages)
                     .boxed()
                     .toList();
+
             model.addAttribute("pageNumbers", pageNumbers);
         }
     }
