@@ -22,7 +22,9 @@
           </thead>
           <tbody>
           <tr th:each="question : ${questionsPage.content}">
-            <td th:text="${question.content}">Question</td>
+            <td>
+              <a th:href="'/questions/' + ${question.id}" th:text="${question.content}">Question </a>
+            </td>
             <td>X</td>
             <td>X</td>
 
