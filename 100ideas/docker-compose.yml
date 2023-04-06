@@ -9,6 +9,8 @@ services:
         condition: service_healthy
     environment:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://PostgreSQL:5432/ideas
+      - SPRING_DATASOURCE_USERNAME=compose-postgres
+      - SPRING_DATASOURCE_PASSWORD=compose-postgres
 
 
   PostgreSQL:
