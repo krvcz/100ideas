@@ -1,7 +1,11 @@
 
 <h1 align="center" id="title">100 Ideas!</h1>
 
+<<<<<<< HEAD
 <p id="description">Project of the question site!. It made as part of a programming course StormIT by Tomasz Woliński. The site allows you to add new question and get answers on either the easiest or hardest questions. Admin Panel was also implemented, granted user can management of all content on site </p>
+=======
+<p id="description">Project of the question site. It made as part of a programming course StormIT by Tomasz Woliński. The site allows you to add new question and get answers on either the easiest or hardest questions. Admin Panel was also implemented where granted user can management of all content on site. </p>
+>>>>>>> 2c47fab3e9383e1bf7b15270e45951ddecfebf23
 
 
 <h2> 🚀 Demo - SOON!</h2>
