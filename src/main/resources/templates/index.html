@@ -17,17 +17,17 @@
                     <a href="#" th:href="@{'/questions/' + ${question.id}}" class="stretched-link"></a>
                 </div>
                 <div class="col-auto d-none d-lg-block">
-                    <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em" font-size="2em" th:text="${question.answers}">Odpowiedzi</text></svg>
+                    <svg class="bd-placeholder-img" width="200" height="250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#383837"></rect><text x="50%" y="50%" fill="#f2f2eb" dy=".3em" font-size="2em" th:text="${question.answers}">Odpowiedzi</text></svg>
                 </div>
             </div>
 
         </div>
     </div>
     <div class="row g-5">
-        <div class="col-md-12">
+        <div class="col-md-10">
             <article class="blog-post" th:each="categoryStat : ${categoriesStats.getContent()}">
                 <h2 class="blog-post-title">
-                    <a th:href="@{'/categories/' + ${categoryStat.id}}" th:text="${categoryStat.name}"></a>
+                    <a th:href="@{'/categories/' + ${categoryStat.id}}" th:text="${categoryStat.name}" style="color: black"></a>
                 </h2>
                 <p class="blog-post-meta" th:text="'Pytań: '+${categoryStat.questions}+', odpowiedzi: '+${categoryStat.answers}"></p>
                 <table class="table" th:if="${categoryStat.questions>0}">
