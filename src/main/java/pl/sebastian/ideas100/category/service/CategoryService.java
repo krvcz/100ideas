@@ -77,7 +77,9 @@ public class CategoryService {
 
         return new PageImpl<>(categories.stream()
                 .map(categoryWithStatsMapper::map)
-                .collect(Collectors.toList()), pageable, categories.getTotalElements());
+                .sorted(Comparator.comparingLong(CategoryDTO::getQuestions).reversed())
+                .collect(Collectors.toList())
+                , pageable, categories.getTotalElements());
 
     }
 
