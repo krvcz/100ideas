@@ -1,4 +1,4 @@
-package pl.sebastian.ideas100.common.utils.Controller;
+package pl.sebastian.ideas100.common.utils.controller;
 
 import org.springframework.data.domain.Page;
 import org.springframework.ui.Model;
@@ -18,7 +18,5 @@ public abstract class ControllerUtils {
             model.addAttribute("pageNumbers", pageNumbers);
         }
     }
-
-
 
 }

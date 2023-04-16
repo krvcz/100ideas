@@ -60,7 +60,6 @@ class CategoryApiControllerTest {
 
         category =  categoryWithStatsMapper.map(page.getContent().get(0));
 
-
         when(categoryService.getCategories(any(), any())).thenReturn(page);
 
         when(categoryService.getCategories(any())).thenReturn(page);
@@ -125,9 +124,5 @@ class CategoryApiControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                 )
                 .andExpect(MockMvcResultMatchers.status().isOk());
-
-
-
-
     }
 }

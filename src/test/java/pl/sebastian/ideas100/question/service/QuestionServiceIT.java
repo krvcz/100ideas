@@ -42,8 +42,6 @@ class QuestionServiceIT {
 
     private static Category category;
 
-
-
     @BeforeEach
     public  void setUp(){
         category = new Category("testowa");
@@ -65,20 +63,16 @@ class QuestionServiceIT {
         question2.setCategory(category);
         question3.setCategory(category);
 
-
         // When
-
         questionRepository.save(question1);
         questionRepository.save(question2);
         questionRepository.save(question3);
         List<Question> questionList = questionService.getQuestions(Pageable.unpaged()).getContent();
 
         // Then
-
         assertThat(questionList).hasSize(3)
                 .extracting(Question::getContent)
                 .containsExactlyInAnyOrder("Question11", "Question22", "Question33");
-
 
     }
 
@@ -98,7 +92,6 @@ class QuestionServiceIT {
         question2.setCategory(category);
         question3.setCategory(category);
 
-
         // When
         Question testedQuestion1 = questionService.addQuestion(questionWithStatsMapper.map(question1));
         Question testedQuestion2 =questionService.addQuestion(questionWithStatsMapper.map(question2));
@@ -107,7 +100,6 @@ class QuestionServiceIT {
         List<Question> questionList = questionRepository.findAll();
 
         // Then
-
         assertThat(questionList).hasSize(3)
                 .extracting(Question::getContent)
                 .containsExactlyInAnyOrder("Question11", "Question22", "Question33");
@@ -148,7 +140,6 @@ class QuestionServiceIT {
                 .extracting(Question::getContent)
                 .containsExactlyInAnyOrder("KeywordABAA", "KeywordABC");
 
-
     }
     @Test
     void shouldReturnHotQuestions() {
@@ -183,9 +174,7 @@ class QuestionServiceIT {
         question3.addAnswer(answer4);
         question3.addAnswer(answer6);
 
-
         answerRepository.saveAll(List.of(answer1, answer2, answer3, answer4, answer5, answer6));
-
 
         // when
         List<Question> questions = questionService.getHotQuestions(Pageable.unpaged()).getContent();
@@ -228,9 +217,7 @@ class QuestionServiceIT {
         question3.addAnswer(answer4);
         question3.addAnswer(answer6);
 
-
         answerRepository.saveAll(List.of(answer1, answer2, answer3, answer4, answer5, answer6));
-
 
         // when
         List<Question> questions = questionService.getUnansweredQuestions(Pageable.unpaged()).getContent();
@@ -264,6 +251,7 @@ class QuestionServiceIT {
         assertThat(questionRepository.findAll()).hasSize(2)
                 .extracting(Question::getContent)
                 .containsExactlyInAnyOrder("Question22", "Question33");
+
     }
 
     @Test
@@ -303,7 +291,6 @@ class QuestionServiceIT {
         newQuestion1.setCategory(category);
         newQuestion2.setCategory(category);
 
-
         // when
         questionService.updateQuestion(question1.getId(), questionWithStatsMapper.map(newQuestion1));
         questionService.updateQuestion(question2.getId(), questionWithStatsMapper.map(newQuestion2));
@@ -325,7 +312,6 @@ class QuestionServiceIT {
         question2.setCategory(category);
 
         questionRepository.saveAll(List.of(question1, question2));
-
 
         // when
         List<Question> questions = questionService.getQuestionsFromCategory(category.getId(), Pageable.unpaged()).getContent();

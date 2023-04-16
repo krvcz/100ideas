@@ -19,7 +19,6 @@ public class CategoryWithStatsMapper {
         categoryDTO.setId(category.getId());
         categoryDTO.setName(category.getName());
 
-
         categoryDTO.setQuestions(category.getQuestions().size());
         categoryDTO.setAnswers(category.getQuestions().stream()
                 .map(Question::getAnswers)
@@ -35,10 +34,7 @@ public class CategoryWithStatsMapper {
         category.setId(categoryDTO.getId());
         category.setName(categoryDTO.getName());
 
-
         return category;
     }
-
-
 
 }

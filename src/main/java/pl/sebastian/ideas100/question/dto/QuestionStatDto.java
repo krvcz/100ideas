@@ -15,10 +15,13 @@ import java.util.UUID;
 public class QuestionStatDto {
 
     private UUID id;
+
     @NotBlank(message = "{ideas.validation.question.constraints.NotNull.message}")
     @Size(min = 10, max=255, message = "{ideas.validation.question.constraints.Size.message}")
     private String content;
+
     private long answers;
+
     private String category;
 
     @NotNull(message = "{ideas.validation.question.constraints.NotNull.message}")

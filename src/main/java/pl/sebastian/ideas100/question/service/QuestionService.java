@@ -75,7 +75,6 @@ public class QuestionService {
         newQuestion.setCategory(question.getCategory());
         newQuestion.setContent(question.getContent());
 
-
         questionRepository.save(newQuestion);
 
         return newQuestion;

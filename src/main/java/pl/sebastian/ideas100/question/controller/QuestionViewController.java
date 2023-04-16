@@ -12,16 +12,15 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pl.sebastian.ideas100.IdeasConfiguration;
 import pl.sebastian.ideas100.common.dto.Message;
-import pl.sebastian.ideas100.common.utils.Controller.CommonViewController;
+import pl.sebastian.ideas100.common.utils.controller.CommonViewController;
 import pl.sebastian.ideas100.question.dto.QuestionStatDto;
 import pl.sebastian.ideas100.question.model.Question;
 import pl.sebastian.ideas100.question.service.AnswerService;
-import pl.sebastian.ideas100.category.service.CategoryService;
 import pl.sebastian.ideas100.question.service.QuestionService;
 
 import java.util.UUID;
 
-import static pl.sebastian.ideas100.common.utils.Controller.ControllerUtils.*;
+import static pl.sebastian.ideas100.common.utils.controller.ControllerUtils.*;
 
 
 @Controller
@@ -30,9 +29,10 @@ import static pl.sebastian.ideas100.common.utils.Controller.ControllerUtils.*;
 public class QuestionViewController extends CommonViewController {
 
     private final QuestionService questionService;
-    private final AnswerService answerService;
-    private final IdeasConfiguration ideasConfiguration;
 
+    private final AnswerService answerService;
+
+    private final IdeasConfiguration ideasConfiguration;
 
 
     @GetMapping
@@ -40,7 +40,6 @@ public class QuestionViewController extends CommonViewController {
         return "redirect:/questions/hot";
 
     }
-
 
     @GetMapping("{id}")
     public String singleView(@PathVariable("id") UUID id, Model model){
@@ -82,11 +81,8 @@ public class QuestionViewController extends CommonViewController {
     public String hotView(Model model,
                           @RequestParam(value = "page", required = false, defaultValue = "0") int page){
 
-
         Pageable hotPage = PageRequest.of(page, Integer.parseInt(ideasConfiguration.getPageSize()));
         Page<Question> hotQuestions = questionService.getHotQuestions(hotPage);
-
-
 
         addGlobalAttributes(model, hotPage);
         model.addAttribute("questionsPage", hotQuestions);
@@ -101,7 +97,6 @@ public class QuestionViewController extends CommonViewController {
     public String unansweredView(Model model,
                           @RequestParam(value = "page", required = false, defaultValue = "0") int page){
 
-
         Pageable unansweredPage = PageRequest.of(page, Integer.parseInt(ideasConfiguration.getPageSize()));
         Page<Question> hotQuestions = questionService.getUnansweredQuestions(unansweredPage);
 
@@ -113,8 +108,5 @@ public class QuestionViewController extends CommonViewController {
 
         return "question/index";
     }
-
-
-
 
 }

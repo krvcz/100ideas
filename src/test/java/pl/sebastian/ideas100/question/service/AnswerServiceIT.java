@@ -1,5 +1,7 @@
 package pl.sebastian.ideas100.question.service;
 
+import jakarta.persistence.EntityNotFoundException;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,16 +13,20 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import pl.sebastian.ideas100.category.model.Category;
 import pl.sebastian.ideas100.category.repository.CategoryRepository;
+import pl.sebastian.ideas100.question.dto.AnswerStatDto;
 import pl.sebastian.ideas100.question.model.Answer;
 import pl.sebastian.ideas100.question.model.Question;
 import pl.sebastian.ideas100.question.repository.AnswerRepository;
 import pl.sebastian.ideas100.question.repository.QuestionRepository;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.catchThrowable;
+
 @SpringBootTest
 @Transactional
 @Rollback
@@ -42,6 +48,9 @@ class AnswerServiceIT {
     @Autowired
     private AnswerService answerService;
 
+    @Autowired
+    private AnswerStatMapper answerStatMapper;
+
     @BeforeEach
      void setUp() {
         answerRepository.deleteAll();
@@ -57,7 +66,6 @@ class AnswerServiceIT {
     @Test
     void shouldGetAnswers() {
         // Given
-
         Answer answer1 = new Answer("Answer1");
         Answer answer2 = new Answer("Answer2");
         Answer answer3 = new Answer("Answer3");
@@ -73,11 +81,11 @@ class AnswerServiceIT {
 
 
         // When
-        List<Answer> answerList = answerService.getAnswers();
+        List<AnswerStatDto> answerList = answerService.getAnswers();
 
         // Then
         assertThat(answerList).hasSize(3)
-                .extracting(Answer::getContent)
+                .extracting(AnswerStatDto::getContent)
                 .containsExactlyInAnyOrder("Answer1", "Answer2", "Answer3");
 
     }
@@ -96,13 +104,12 @@ class AnswerServiceIT {
         answerRepository.save(answer2);
         answerRepository.save(answer3);
 
-
         // When
-        List<Answer> answerList = answerService.getAnswersByQuestionId(question.getId());
+        List<AnswerStatDto> answerList = answerService.getAnswersByQuestionId(question.getId());
 
         // Then
         assertThat(answerList).hasSize(3)
-                .extracting(Answer::getContent)
+                .extracting(AnswerStatDto::getContent)
                 .containsExactlyInAnyOrder("Answer1", "Answer2", "Answer3");
 
     }
@@ -119,25 +126,23 @@ class AnswerServiceIT {
         answerRepository.save(answer2);
 
         // When
-        Optional<Answer> foundAnswer1 = answerService.getAnswer(answer1.getId());
-        Optional<Answer> foundAnswer2 = answerService.getAnswer(answer2.getId());
-        Optional<Answer> foundAnswer3 = answerService.getAnswer(UUID.randomUUID());
+        AnswerStatDto foundAnswer1 = answerService.getAnswer(answer1.getId());
+        AnswerStatDto foundAnswer2 = answerService.getAnswer(answer2.getId());
+        Throwable thrown = catchThrowable(() -> {
+            answerService.getAnswer(UUID.randomUUID());
+        });
 
         // Then
-        assertThat(foundAnswer1).isPresent()
-                .isEqualTo(answerRepository.findById(answer1.getId()))
-                .get()
-                .extracting(Answer::getContent)
+        assertThat(foundAnswer1)
+                .extracting(AnswerStatDto::getContent)
                 .isEqualTo("Answer1");
 
-        assertThat(foundAnswer2).isPresent()
-                .isEqualTo(answerRepository.findById(answer2.getId()))
-                .get()
-                .extracting(Answer::getContent)
+        assertThat(foundAnswer2)
+                .extracting(AnswerStatDto::getContent)
                 .isEqualTo("Answer2");
 
-        assertThat(foundAnswer3).isNotPresent();
-
+        assertThat(thrown)
+                .isInstanceOf(EntityNotFoundException.class);
 
     }
 
@@ -151,7 +156,7 @@ class AnswerServiceIT {
         answerRepository.save(answer1);
 
         // When
-        answerService.updateAnswer(answer1.getId(), answer2);
+        answerService.updateAnswer(answer1.getId(), answerStatMapper.map(answer2));
         Optional<Answer> answer = answerRepository.findById(answer1.getId());
 
         // Then
@@ -192,9 +197,8 @@ class AnswerServiceIT {
         question.addAnswer(answer1);
         answerRepository.save(answer1);
 
-
         // When
-        answerService.addAnswer(question.getId(), answer2);
+        answerService.addAnswer(question.getId(), answerStatMapper.map(answer2));
         List<Answer> answers = answerRepository.findAllByQuestionId(question.getId());
 
         // Then

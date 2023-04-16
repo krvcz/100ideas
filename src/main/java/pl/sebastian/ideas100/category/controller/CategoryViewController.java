@@ -1,7 +1,6 @@
 package pl.sebastian.ideas100.category.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,15 +12,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.sebastian.ideas100.IdeasConfiguration;
 import pl.sebastian.ideas100.category.service.CategoryService;
-import pl.sebastian.ideas100.common.utils.Controller.CommonViewController;
-import pl.sebastian.ideas100.common.utils.Controller.ControllerUtils;
-import pl.sebastian.ideas100.question.dto.QuestionStatDto;
+import pl.sebastian.ideas100.common.utils.controller.CommonViewController;
 import pl.sebastian.ideas100.question.model.Question;
 import pl.sebastian.ideas100.question.service.QuestionService;
 
 import java.util.UUID;
 
-import static pl.sebastian.ideas100.common.utils.Controller.ControllerUtils.*;
+import static pl.sebastian.ideas100.common.utils.controller.ControllerUtils.*;
 
 @Controller
 @RequiredArgsConstructor

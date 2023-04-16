@@ -11,5 +11,4 @@ public class IdeasConfiguration {
     @Value("${ideas.pageSize:5}")
     public String pageSize;
 
-
 }

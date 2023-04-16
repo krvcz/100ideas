@@ -1,4 +1,4 @@
-package pl.sebastian.ideas100.common.utils.Controller;
+package pl.sebastian.ideas100.common.utils.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,4 +24,5 @@ public abstract class CommonViewController {
         model.addAttribute("previousPage", previousPage.getPageNumber());
         model.addAttribute("hasPreviousPage", previousPage.hasPrevious());
     }
+
 }

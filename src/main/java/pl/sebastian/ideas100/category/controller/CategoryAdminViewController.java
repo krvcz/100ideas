@@ -15,12 +15,13 @@ import pl.sebastian.ideas100.category.dto.CategoryDTO;
 import pl.sebastian.ideas100.category.model.Category;
 import pl.sebastian.ideas100.category.service.CategoryService;
 import pl.sebastian.ideas100.common.dto.Message;
-import pl.sebastian.ideas100.common.utils.Controller.CommonViewController;
+import pl.sebastian.ideas100.common.utils.SortDirectionEnum;
+import pl.sebastian.ideas100.common.utils.controller.CommonViewController;
 
 
 import java.util.UUID;
 
-import static pl.sebastian.ideas100.common.utils.Controller.ControllerUtils.*;
+import static pl.sebastian.ideas100.common.utils.controller.ControllerUtils.*;
 
 @Controller
 @RequestMapping("/admin/categories")
@@ -38,22 +39,20 @@ public class CategoryAdminViewController extends CommonViewController {
                                  @RequestParam(value = "direction", required = false, defaultValue = "asc") String direction,
                                  @RequestParam(value = "keyword", required = false) String search) {
 
-
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.fromString(direction), field);
 
-        String reverseSort = null;
-        if ("asc".equals(direction)) {
-            reverseSort = "desc";
+        SortDirectionEnum reverseSort = null;
+        if (SortDirectionEnum.ASC.getReprText().equals(direction)) {
+            reverseSort = SortDirectionEnum.DESC;
         } else {
-            reverseSort = "asc";
+            reverseSort = SortDirectionEnum.ASC;
         }
-
 
         Page<Category> categoryPage = categoryService.getCategories(pageable, search);
 
         model.addAttribute("categoriesPage", categoryPage);
         model.addAttribute("search", search);
-        model.addAttribute("reverseSort", reverseSort);
+        model.addAttribute("reverseSort", reverseSort.getReprText());
 
         addGlobalAttributes(model, pageable);
         paging(model, categoryPage);
@@ -71,11 +70,9 @@ public class CategoryAdminViewController extends CommonViewController {
                       @RequestParam(value = "field", required = false, defaultValue = "id") String field,
                       @RequestParam(value = "direction", required = false, defaultValue = "asc") String direction ){
 
-
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.fromString(direction), field);
 
         Page<Category> categoriesPage = categoryService.getCategories(pageable);
-
 
         if (bindingResult.hasErrors()) {
             model.addAttribute("category", category);
@@ -144,7 +141,5 @@ public class CategoryAdminViewController extends CommonViewController {
         redirectAttributes.addFlashAttribute("message", Message.success("Category deleted!"));
         return "redirect:/admin/categories";
     }
-
-
 
 }

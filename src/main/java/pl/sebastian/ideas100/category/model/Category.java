@@ -24,7 +24,7 @@ public class Category {
     private String name;
 
     @OneToMany(mappedBy = "category")
-    Set<Question> questions;
+    private Set<Question> questions;
 
     public Category(String name) {
         this();

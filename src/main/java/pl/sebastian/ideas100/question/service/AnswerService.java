@@ -4,12 +4,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+import pl.sebastian.ideas100.question.dto.AnswerStatDto;
 import pl.sebastian.ideas100.question.model.Answer;
 import pl.sebastian.ideas100.question.repository.AnswerRepository;
 import pl.sebastian.ideas100.question.model.Question;
 import pl.sebastian.ideas100.question.repository.QuestionRepository;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,32 +21,42 @@ public class AnswerService {
 
     private final QuestionRepository questionRepository;
 
+    private final AnswerStatMapper answerStatMapper;
+
 
     @Transactional(readOnly = true)
-    public List<Answer> getAnswers() {
-        return answerRepository.findAll();
+    public List<AnswerStatDto> getAnswers() {
+        return answerRepository.findAll()
+                .stream()
+                .map(answerStatMapper::map)
+                .collect(Collectors.toList());
     }
 
     @Transactional(readOnly = true)
-    public List<Answer> getAnswersByQuestionId(UUID questionId) {
-            return answerRepository.findAllByQuestionId(questionId);
+    public List<AnswerStatDto> getAnswersByQuestionId(UUID questionId) {
+            return answerRepository.findAllByQuestionId(questionId)
+                    .stream()
+                    .map(answerStatMapper::map)
+                    .collect(Collectors.toList());
 
     }
     @Transactional(readOnly = true)
-    public Optional<Answer> getAnswer(UUID id) {
-        return answerRepository.findById(id);
+    public AnswerStatDto getAnswer(UUID id) {
+        Answer answer = answerRepository.getById(id);
+
+        return answerStatMapper.map(answer);
 
     }
 
     @Transactional
-    public Answer updateAnswer(UUID answerId, Answer answer) {
+    public AnswerStatDto updateAnswer(UUID answerId, AnswerStatDto answer) {
         Answer oldAnswer = answerRepository.getById(answerId);
 
         oldAnswer.setContent(answer.getContent());
 
         answerRepository.save(oldAnswer);
 
-        return oldAnswer;
+        return answerStatMapper.map(oldAnswer);
 
     }
 
@@ -54,7 +66,7 @@ public class AnswerService {
     }
 
     @Transactional
-    public Answer addAnswer(UUID questionId, Answer answer) {
+    public AnswerStatDto addAnswer(UUID questionId, AnswerStatDto answer) {
         Answer newAnswer = new Answer();
         Question question = questionRepository.getById(questionId);
 
@@ -64,13 +76,7 @@ public class AnswerService {
         answerRepository.save(newAnswer);
         questionRepository.save(question);
 
-
-
-
-        return newAnswer;
-
-
-
+        return answerStatMapper.map(newAnswer);
 
     }
 }

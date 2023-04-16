@@ -30,9 +30,7 @@ public class QuestionWithStatsMapper {
         question.setCategory(categoryRepository.getById(questionStatDto.getCategoryId()));
         question.setContent(questionStatDto.getContent());
 
-
         return question;
     }
-
 
 }

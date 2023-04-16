@@ -23,7 +23,6 @@ public class QuestionApiController {
 
     private final QuestionService questionService;
 
-
     @GetMapping
     public ResponseEntity<Page<Question>> showQuestions(Pageable pageable) {
 
@@ -61,6 +60,5 @@ public class QuestionApiController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 
 }

@@ -1,4 +1,4 @@
-package pl.sebastian.ideas100.common.utils.Controller;
+package pl.sebastian.ideas100.common.utils.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -10,17 +10,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import pl.sebastian.ideas100.category.dto.CategoryDTO;
-import pl.sebastian.ideas100.category.model.Category;
 import pl.sebastian.ideas100.category.service.CategoryService;
 import pl.sebastian.ideas100.question.dto.QuestionStatDto;
-import pl.sebastian.ideas100.question.model.Question;
 import pl.sebastian.ideas100.question.service.QuestionService;
 import pl.sebastian.ideas100.question.service.QuestionWithStatsMapper;
 
 import java.util.List;
 import java.util.UUID;
 
-import static pl.sebastian.ideas100.common.utils.Controller.ControllerUtils.*;
+import static pl.sebastian.ideas100.common.utils.controller.ControllerUtils.*;
 
 @Controller
 @RequestMapping("/")
@@ -32,8 +30,6 @@ public class IndexViewController extends CommonViewController {
     private final QuestionService questionService;
 
     private final QuestionWithStatsMapper questionWithStatsMapper;
-
-
 
     @GetMapping
     public String mainPageView(Model model,
@@ -61,6 +57,5 @@ public class IndexViewController extends CommonViewController {
     public List<QuestionStatDto> generateHotQuestionsPerCategory(UUID categoryId) {
         return questionService.getHotQuestionsFromCategory(categoryId, 2);
     }
-
 
 }

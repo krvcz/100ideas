@@ -14,18 +14,15 @@ public class CategoryDTO {
     private UUID Id;
 
     @NotBlank(message = "{ideas.validation.category.constraints.NotBlank.message}")
-    @Size(min=5, max=255, message = "{ideas.validation.category.constraints.Size.message}")
+    @Size(min = 5, max = 255, message = "{ideas.validation.category.constraints.Size.message}")
     private String name;
 
     private long questions;
 
     private long answers;
 
-    public CategoryDTO(String name){
+    public CategoryDTO(String name) {
         this.name = name;
     }
-
-
-
 
 }

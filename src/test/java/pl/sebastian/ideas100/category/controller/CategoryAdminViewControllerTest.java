@@ -53,7 +53,6 @@ class CategoryAdminViewControllerTest {
                 )
         );
 
-
         when(categoryService.getCategories(any(), any())).thenReturn(page);
 
         when(categoryService.getCategories(any())).thenReturn(page);
@@ -115,7 +114,6 @@ class CategoryAdminViewControllerTest {
                 Arguments.of("/admin/categories/update", Message.info("Category edited!")),
                 Arguments.of("/admin/categories/" + UUID.randomUUID() + "/delete", Message.success("Category deleted!"))
         );
-
 
     }
 

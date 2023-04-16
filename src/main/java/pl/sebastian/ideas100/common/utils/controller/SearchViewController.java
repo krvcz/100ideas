@@ -1,4 +1,4 @@
-package pl.sebastian.ideas100.common.utils.Controller;
+package pl.sebastian.ideas100.common.utils.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,7 +14,7 @@ import pl.sebastian.ideas100.category.service.CategoryService;
 import pl.sebastian.ideas100.question.model.Question;
 import pl.sebastian.ideas100.question.service.QuestionService;
 
-import static pl.sebastian.ideas100.common.utils.Controller.ControllerUtils.paging;
+import static pl.sebastian.ideas100.common.utils.controller.ControllerUtils.paging;
 
 @Controller
 @RequestMapping("/search")
@@ -44,7 +44,6 @@ public class SearchViewController {
             model.addAttribute("previousPage", previousPage);
             paging(model, searchedQuestions);
         }
-
 
         model.addAttribute("categories", categoryService.getCategories(Pageable.unpaged()));
 

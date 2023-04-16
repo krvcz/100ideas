@@ -14,6 +14,4 @@ public class StatisticsDTO {
 
     private long answers;
 
-
-
 }

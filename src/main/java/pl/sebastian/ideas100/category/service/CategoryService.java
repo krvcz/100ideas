@@ -24,7 +24,6 @@ public class CategoryService {
 
     private final CategoryWithStatsMapper categoryWithStatsMapper;
 
-
     @Transactional(readOnly = true)
     public Page<Category> getCategories(Pageable pageable) {
         return getCategories(pageable, null);
@@ -45,14 +44,12 @@ public class CategoryService {
         return categoryWithStatsMapper.map(categoryRepository.getById(id));
     }
 
-
     @Transactional
     public CategoryDTO updateCategory(UUID id, CategoryDTO category) {
         Category oldCategory = categoryRepository.getById(id);
         Category  newCategory = categoryWithStatsMapper.map(category);
 
         oldCategory.setName(newCategory.getName());
-
 
         return categoryWithStatsMapper.map(categoryRepository.save(oldCategory));
 

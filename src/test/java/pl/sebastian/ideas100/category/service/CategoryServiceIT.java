@@ -154,10 +154,8 @@ class CategoryServiceIT {
         // Given
         CategoryDTO category = new CategoryDTO("Category4");
 
-
         // When
         categoryService.addCategory(category);
-
 
         // Then
         assertThat(categoryRepository.findAll()).hasSize(4)

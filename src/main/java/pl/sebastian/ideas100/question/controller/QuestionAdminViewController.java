@@ -3,7 +3,6 @@ package pl.sebastian.ideas100.question.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,11 +13,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import pl.sebastian.ideas100.category.model.Category;
 import pl.sebastian.ideas100.category.service.CategoryService;
 import pl.sebastian.ideas100.common.dto.Message;
-import pl.sebastian.ideas100.common.utils.Controller.CommonViewController;
-import pl.sebastian.ideas100.common.utils.Controller.ControllerUtils;
+import pl.sebastian.ideas100.common.utils.SortDirectionEnum;
+import pl.sebastian.ideas100.common.utils.controller.CommonViewController;
 import pl.sebastian.ideas100.question.dto.QuestionStatDto;
 import pl.sebastian.ideas100.question.model.Question;
 import pl.sebastian.ideas100.question.service.QuestionService;
@@ -26,7 +24,7 @@ import pl.sebastian.ideas100.question.service.QuestionService;
 
 import java.util.UUID;
 
-import static pl.sebastian.ideas100.common.utils.Controller.ControllerUtils.paging;
+import static pl.sebastian.ideas100.common.utils.controller.ControllerUtils.paging;
 
 @Controller
 @RequestMapping("/admin/questions")
@@ -50,18 +48,18 @@ public class QuestionAdminViewController extends CommonViewController {
 
         Pageable pageable = PageRequest.of(page, size, Sort.Direction.fromString(direction), field);
 
-        String reverseSort = null;
-        if ("asc".equals(direction)) {
-            reverseSort = "desc";
+        SortDirectionEnum reverseSort = null;
+        if (SortDirectionEnum.ASC.getReprText().equals(direction)) {
+            reverseSort = SortDirectionEnum.DESC;
         } else {
-            reverseSort = "asc";
+            reverseSort = SortDirectionEnum.ASC;
         }
 
         Page<Question> questionPage = questionService.getQuestions(pageable, search);
 
         model.addAttribute("questionsPage", questionPage);
         model.addAttribute("search", search);
-        model.addAttribute("reverseSort", reverseSort);
+        model.addAttribute("reverseSort", reverseSort.getReprText());
 
         addGlobalAttributes(model, pageable);
         paging(model, questionPage);
@@ -94,13 +92,11 @@ public class QuestionAdminViewController extends CommonViewController {
             return "admin/question/index";
         }
 
-
         questionService.addQuestion(question);
         redirectAttributes.addFlashAttribute("message", Message.success("Question added!"));
 
         return "redirect:/admin/questions";
     }
-
 
     @PostMapping(value = "update")
     public String edit(@Valid @ModelAttribute("question") QuestionStatDto questionStatDto,
@@ -133,9 +129,6 @@ public class QuestionAdminViewController extends CommonViewController {
         return "redirect:/admin/questions";
     }
 
-
-
-
     @PostMapping("/{questionId}/delete")
     public String delete(@ModelAttribute("question") Question question,
                          RedirectAttributes redirectAttributes,
@@ -145,7 +138,5 @@ public class QuestionAdminViewController extends CommonViewController {
 
         return "redirect:/admin/questions";
     }
-
-
 
 }

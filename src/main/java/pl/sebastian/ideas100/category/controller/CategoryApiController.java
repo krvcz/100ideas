@@ -20,9 +20,6 @@ public class CategoryApiController {
 
     private final CategoryService categoryService;
 
-    private final CategoryWithStatsMapper categoryWithStatsMapper;
-
-
     @GetMapping
     public ResponseEntity<Page<Category>> showCategories(Pageable pageable) {
 
@@ -39,6 +36,7 @@ public class CategoryApiController {
         return new ResponseEntity<>(category, HttpStatus.OK);
 
     }
+
     @PostMapping
     public ResponseEntity<CategoryDTO> createCategory(@RequestBody CategoryDTO category) {
         CategoryDTO categoryAdded = categoryService.addCategory(category);
@@ -60,6 +58,5 @@ public class CategoryApiController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
 
 }

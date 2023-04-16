@@ -12,7 +12,6 @@ class QuestionTest {
 
     private Question question;
 
-
     @BeforeEach
     void setUp() {
         question = new Question("Jak żyć ?");
@@ -41,7 +40,6 @@ class QuestionTest {
         assertThat(answers).isNotNull();
         assertThat(answers).containsExactly(answer);
 
-
     }
 
     @Test
@@ -62,9 +60,6 @@ class QuestionTest {
         assertThat(firstAnswer).isIn(answers);
         assertThat(secondAnswer).isIn(answers);
 
-
     }
-
-
 
 }
