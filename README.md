@@ -7,9 +7,9 @@
 
 <h2> 🚀 Demo </h2>
 
-[User Panel](https://100ideas-production.up.railway.app)
+[User Panel](https://different-roll-production.up.railway.app)
 
-[Admin Panel](https://100ideas-production.up.railway.app/admin)
+[Admin Panel](https://different-roll-production.up.railway.app/admin)
 
  
 <h2>💻 Built with</h2>
